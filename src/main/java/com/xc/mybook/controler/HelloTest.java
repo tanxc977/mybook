@@ -18,12 +18,17 @@ public class HelloTest {
     public String helloHtml(Map<String,Object> map){
 
         map.put("hello","from HelloTest.helloHtml");
-        return"/hello";
+        return "/hello";
     }
 
     @RequestMapping("/index")
     public String indexHtml(){
-        return"/index";
+        return "/index2";
+    }
+
+    @RequestMapping("/mainindex")
+    public  String mainIndex(){
+        return "/mainindex";
     }
 
     @RequestMapping("/hello2")
