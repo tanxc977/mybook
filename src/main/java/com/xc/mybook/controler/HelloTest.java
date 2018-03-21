@@ -1,6 +1,7 @@
 package com.xc.mybook.controler;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,6 +35,12 @@ public class HelloTest {
     @RequestMapping("/bookpage")
     public String bookPage(){
         return "/bookpage";
+    }
+
+
+    @RequestMapping("/bookpage/{page}")
+    public String bookPage(@PathVariable("page") int page){
+        return "/bookpage2";
     }
 
     @RequestMapping("/hello2")
