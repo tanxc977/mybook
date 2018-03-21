@@ -31,6 +31,11 @@ public class HelloTest {
         return "/mainindex";
     }
 
+    @RequestMapping("/bookpage")
+    public String bookPage(){
+        return "/bookpage";
+    }
+
     @RequestMapping("/hello2")
     public String helloFtl(Map<String,Object> map){
         map.put("hello", "from fremarkder.hello");
