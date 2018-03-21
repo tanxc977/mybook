@@ -43,6 +43,7 @@ public class HelloTest {
         return "/bookpage2";
     }
 
+
     @RequestMapping("/hello2")
     public String helloFtl(Map<String,Object> map){
         map.put("hello", "from fremarkder.hello");
