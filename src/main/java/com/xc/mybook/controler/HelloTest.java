@@ -22,27 +22,6 @@ public class HelloTest {
         return "/hello";
     }
 
-    @RequestMapping("/index")
-    public String indexHtml(){
-        return "/index2";
-    }
-
-    @RequestMapping("/mainindex")
-    public  String mainIndex(){
-        return "/mainindex";
-    }
-
-    @RequestMapping("/bookpage")
-    public String bookPage(){
-        return "/bookpage";
-    }
-
-
-    @RequestMapping("/bookpage/{page}")
-    public String bookPage(@PathVariable("page") int page){
-        return "/bookpage2";
-    }
-
 
     @RequestMapping("/hello2")
     public String helloFtl(Map<String,Object> map){
@@ -50,5 +29,26 @@ public class HelloTest {
         return "/hello";
     }
 
+
+    @RequestMapping("/index")
+    public String index3Html(){
+        return "/index";
+    }
+
+
+    @RequestMapping("/mainpagelist")
+    public String mainpageHtml(){
+        return "/mainpagelist";
+    }
+
+    @RequestMapping("/bookpage")
+    public String bookPage(){
+        return "/bookpage";
+    }
+
+    @RequestMapping("/bookpage/{type}")
+    public String bookPage(@PathVariable("type") String type){
+        return "/bookpage";
+    }
 
 }
