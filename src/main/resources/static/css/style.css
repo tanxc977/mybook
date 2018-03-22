@@ -9,7 +9,7 @@
 }
 .box_shadow{
     border-radius: 5px;
-    width: 100px;
+    width: 100%;
     border: 1px solid #D9D9D9;
     background-color: #ffffff;
 }
@@ -82,7 +82,6 @@ body{
 .homePagebody{
     margin:0 auto;
     width:1140px;
-    height:100%;
     padding:5px;
 }
 .homePagebody a:hover{
@@ -108,17 +107,17 @@ body{
 .mainbody_right{
     position: relative;
     height:100%;
-    padding-left: 10px;
+    padding-left: 5px;
 }
 .mainbody_left{
     position: relative;
     height:100%;
+    padding-bottom: 80px;
 }
 .pagefooter{
     position:relative;
-    left:0;
-    right:0;
-    bottom:0;
+    top:5px;
+    bottom:5px;
     height:44px;
     line-height:44px;
     padding:0 15px;
@@ -138,3 +137,4 @@ body{
     line-height: 150%;
     padding: 15px;
 }
+.clear{ clear:both}

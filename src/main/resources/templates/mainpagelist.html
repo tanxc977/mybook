@@ -10,18 +10,22 @@
 <body>
 
 <!--书籍列表-->
-<div class="layui-row">
-    <div id="booklist"></div>
-    <div class="pagefooter" id="page"></div>
-</div>
+
+<div id="booklist"></div>
+<div class="pagefooter" id="page"></div>
+
 
 <script src="../layui.js"></script>
 <script>
     //JavaScript代码区域
-    layui.use(['laypage', 'layer'], function () {
+    layui.use(['laypage','layer'], function () {
         var laypage = layui.laypage
-            , $ = layui.$
-            , layer = layui.layer;
+            , $ = layui.$;
+
+        $('#booklist').load("/bookpage/a", function () {
+
+        });
+
         laypage.render({
             elem: 'page'
             , count: 100
@@ -41,9 +45,7 @@
                 }
             }
         });
-        $('#booklist').load("/bookpage/a", function () {
 
-        });
     });
 </script>
 </body>
