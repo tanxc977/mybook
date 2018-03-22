@@ -51,4 +51,9 @@ public class HelloTest {
         return "/bookpage";
     }
 
+    @RequestMapping("/bookpage/{type}/{num}")
+    public String bookPage2(@PathVariable("type") String type){
+        return "/bookpage2";
+    }
+
 }
