@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <title>layout 后台大布局 - Layui</title>
+    <title>图书列表</title>
     <link rel="stylesheet" href="../css/layui.css"/>
     <link rel="stylesheet" href="../css/style.css"/>
 </head>
@@ -30,7 +30,7 @@
             elem: 'page'
             , count: 100
             , limit: 10
-            , layout: ['count', 'prev', 'page', 'next', 'skip']
+            , layout: ['prev', 'page', 'next', 'skip']
             , jump: function (obj, first) {
                 console.log(obj)
                 console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
