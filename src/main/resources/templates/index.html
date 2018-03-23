@@ -51,25 +51,25 @@
 
     <div class="layui-row homePagebody">
         <!-- 内容主体区域 -->
+        <div id="divmain">
+            <!--<div class="layui-col-md8 mainbody_left " id="layout-left">-->
+                <!--&lt;!&ndash;书籍列表&ndash;&gt;-->
+            <!--</div>-->
+            <!--<div class="layui-col-md4 mainbody_right" id="layout-right">-->
+                <!--&lt;!&ndash;<div style="padding: 15px;">右侧边</div>&ndash;&gt;-->
+                <!--<div class="mainbody_right" id="layout-right-dtl">-->
+                    <!--<div class="box_shadow item_mg0_5">-->
+                        <!--本站提供各类电子书籍下载，-->
+                        <!--经过站长审核的书也会放上来-->
+                    <!--</div>-->
+                    <!--<div class="box_shadow item_mg0_5">-->
+                        <!--test右侧边2-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
 
-        <div class="layui-col-md8 mainbody_left " id="layout-left">
-            <!--书籍列表-->
         </div>
-        <div class="layui-col-md4 mainbody_right" id="layout-right">
-            <!--<div style="padding: 15px;">右侧边</div>-->
-            <div class="mainbody_right" id="layout-right-dtl">
-                <div class="box_shadow item_mg0_5">
-                        本站提供各类电子书籍下载，
-                        经过站长审核的书也会放上来
-                </div>
-                <div class="box_shadow item_mg0_5">
-                    test右侧边2
-                </div>
-            </div>
-        </div>
-
     </div>
-
     <div class="layui-footer" style="left: 0px;text-align:center; padding:5px 5px;padding-top:10px;position: center">
         <!-- 底部固定区域 -->
         © mbook.com - 我的图书馆
@@ -80,7 +80,7 @@
     //JavaScript代码区域
     layui.use(['jquery'], function () {
         var $ = layui.$;
-        $('#layout-left').load("/mainpagelist",function (){
+        $('#divmain').load("/bookindex", function () {
 
         });
     });

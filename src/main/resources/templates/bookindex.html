@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>图书馆主页</title>
+    <link rel="stylesheet" href="../css/layui.css"/>
+    <link rel="stylesheet" href="../css/style.css"/>
+</head>
+<body>
+
+<!--书籍列表-->
+<div class="layui-col-md8 mainbody_left " id="layout-left">
+    <!--书籍列表-->
+</div>
+<div class="layui-col-md4 mainbody_right" id="layout-right">
+    <!--<div style="padding: 15px;">右侧边</div>-->
+    <div class="mainbody_right" id="layout-right-dtl">
+        <div class="box_shadow item_mg0_5">
+            本站提供各类电子书籍下载，
+            经过站长审核的书也会放上来
+        </div>
+        <div class="box_shadow item_mg0_5">
+            test右侧边2
+        </div>
+    </div>
+</div>
+
+
+<script src="../layui.js"></script>
+<script>
+    //JavaScript代码区域
+    layui.use(['laypage','layer'], function () {
+        var laypage = layui.laypage
+            , $ = layui.$;
+
+        $('#layout-left').load("/booklistpage", function () {
+
+        });
+    });
+</script>
+</body>
+</html>

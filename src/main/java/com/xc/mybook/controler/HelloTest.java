@@ -36,9 +36,14 @@ public class HelloTest {
     }
 
 
-    @RequestMapping("/mainpagelist")
+    @RequestMapping("/bookindex")
+    public String bookindexHtml(){
+        return "/bookindex";
+    }
+
+    @RequestMapping("/booklistpage")
     public String mainpageHtml(){
-        return "/mainpagelist";
+        return "/booklistpage";
     }
 
     @RequestMapping("/bookpage")
