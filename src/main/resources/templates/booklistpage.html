@@ -22,7 +22,7 @@
         var laypage = layui.laypage
             , $ = layui.$;
 
-        $('#booklist').load("/bookpage/a", function () {
+        $('#booklist').load("/bookpage/a/1", function () {
 
         });
 
@@ -35,11 +35,11 @@
                 console.log(obj)
                 console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
                 console.log(obj.limit); //得到每页显示的条数
-
+                var num = obj.curr +1;
                 //首次不执行
                 if (!first) {
                     //do something
-                    $('#booklist').load("/bookpage/a/2", function () {
+                    $('#booklist').load("/bookpage/a/num", function () {
 
                     });
                 }

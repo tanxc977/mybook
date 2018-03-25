@@ -1,10 +1,14 @@
 package com.xc.mybook.controler;
 
+import com.xc.mybook.entity.BookDetail;
+import com.xc.mybook.service.BookDetailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -14,6 +18,9 @@ public class HelloTest {
      * 返回html模板.
 
      */
+
+    @Autowired
+    BookDetailService bookDetailService;
 
     @RequestMapping("/hello")
     public String helloHtml(Map<String,Object> map){
@@ -56,8 +63,10 @@ public class HelloTest {
         return "/bookpage";
     }
 
-    @RequestMapping("/bookpage/{type}/{num}")
-    public String bookPage2(@PathVariable("type") String type){
+    @RequestMapping("/bookpage/{type}/{pageNum}")
+    public String bookPage2(Map<String,Object> map,@PathVariable("type") String type,@PathVariable("pageNum") String pageNo){
+        List<BookDetail> booklist = bookDetailService.getBookListDefault(Integer.parseInt(pageNo));
+        map.put("bookDetailList",booklist);
         return "/bookpage2";
     }
 
