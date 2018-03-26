@@ -1,3 +1,4 @@
+drop if exists table book_detail;
 CREATE TABLE book_detail (
 seqno bigint NOT NULL AUTO_INCREMENT ,
 catagory_tag  varchar(30),
