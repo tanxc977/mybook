@@ -36,13 +36,13 @@
     </div>-->
     <div th:each="book : ${bookDetailList}" class="div_activity box_shadow item_mg0_5">
         <div class="div_activity_img">
-            <img th:src="${book.imagePath}"/>
+            <img width="180px" height="265px" th:src="${book.imagePath}"/>
         </div>
         <div class="activity_content">
             <div class="activity_title">
                 <label th:text="${book.bookName}"> 大清帝国</label>
                 <a href="" title="查看更多">
-                    <i class="layui-icon " style="font-size: 30px; color: #1E9FFF;">&#xe65f;</i>
+                    <i class="layui-icon " style="font-size: 30px; color: #1E9FFF;">&#xe671;</i>
                 </a>
             </div>
             <div class="label_icon">
@@ -50,6 +50,9 @@
             </div>
             <div class="subContentArea" id="bookitem2">
                 <p th:text="${book.bookDesc}">test2</p>
+            </div>
+            <div>
+                <a class="subDetail" href="/bookindex/bookdetail/${book.seqNo}">阅读全文...</a>
             </div>
         </div>
     </div>
