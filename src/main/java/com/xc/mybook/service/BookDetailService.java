@@ -11,6 +11,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class BookDetailService {
@@ -18,7 +19,10 @@ public class BookDetailService {
     private static final Logger logger = LoggerFactory.getLogger(BookDetailService.class);
 
     @Autowired
-    JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
+
+    @Autowired
+    private BookListFactory bookListFactory;
 
     private final String sqlInquire = "select seqno,catagory_tag,update_date,book_url,book_name,book_desc,enter_date," +
             "down_url,down_pwd,image_path,file_path,download_flag,catagory_tag_main,catagory_tag_side,update_date_yyyy," +
@@ -29,5 +33,16 @@ public class BookDetailService {
         return jdbcTemplate.query(sqlInquire, new Object[]{pageStartId, new Double(Constants.pageNum).intValue()},
                 new BookDetailRowmapper());
     }
+
+    public List<BookDetail> getBookListDefault2(Map<String,String> paraMapInput){
+        if (!paraMapInput.containsKey("type")){
+            return null;
+        }
+        String bookListType = paraMapInput.get("type");
+        BookListService bookListService = bookListFactory.getBookListService(bookListType);
+        return bookListService.getDetailList(paraMapInput);
+
+    }
+
 
 }
