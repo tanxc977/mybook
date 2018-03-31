@@ -24,7 +24,7 @@ body{
 }
 .activity_content{
     position: absolute;
-    left: 185px;
+    left: 195px;
     top:10px;
     height:140px;
     width:550px;
@@ -74,9 +74,10 @@ body{
     top:0;
     left:0;
     width:185px;
+    hight:200px;
 }
 .div_activity img{
-    width:170px;
+    width:180px;
     margin:10px;
 }
 .homePagebody{
@@ -103,6 +104,12 @@ body{
     padding:15px;
     padding-left:18px;
     padding-top: 10px;
+}
+
+.subDetail{
+    padding-left: 15px;
+    color: #8d8d8d;
+    font-size: 14px;
 }
 .mainbody_right{
     position: relative;
