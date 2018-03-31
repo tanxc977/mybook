@@ -30,14 +30,14 @@
 
         laypage.render({
             elem: 'page'
-            , count: 100
-            , limit: 10
+            , count: /*[[${totalCount}]]*/ 100
+            , limit: /*[[${pageNum}]]*/10
             , layout: ['prev', 'page', 'next', 'skip']
             , jump: function (obj, first) {
                 console.log(obj)
                 console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
                 console.log(obj.limit); //得到每页显示的条数
-                var num = obj.curr +1;
+                var num = obj.curr;
                 var loadurl='/bookpage/'+type+'/'+num;
                 //首次不执行
                 if (!first) {

@@ -27,4 +27,5 @@ public class BookService {
         Integer pageStartId = (int)((pageNo - 1) * Constants.pageNum);
         return  jdbcTemplate.query(sqlInquire, new Object[]{pageStartId, new Double(Constants.pageNum).intValue()}, new BookRowMapper());
     }
+
 }

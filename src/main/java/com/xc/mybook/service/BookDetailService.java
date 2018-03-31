@@ -26,7 +26,7 @@ public class BookDetailService {
 
     private final String sqlInquire = "select seqno,catagory_tag,update_date,book_url,book_name,book_desc,enter_date," +
             "down_url,down_pwd,image_path,file_path,download_flag,catagory_tag_main,catagory_tag_side,update_date_yyyy," +
-            " update_date_mm,update_date_dd from book_detail where seqno > ? limit ?";
+            " update_date_mm,update_date_dd,book_star from book_detail where seqno > ? limit ?";
 
     public List<BookDetail> getBookListDefault(int pageNo) {
         Integer pageStartId = (int) ((pageNo - 1) * Constants.pageNum);
@@ -42,6 +42,14 @@ public class BookDetailService {
         BookListService bookListService = bookListFactory.getBookListService(bookListType);
         return bookListService.getDetailList(paraMapInput);
 
+    }
+
+    public Integer getBookListCount(Map<String,String> mapinput){
+        if(!mapinput.containsKey("type")){
+            return 0;
+        }
+        BookListService bookListService = bookListFactory.getBookListService(mapinput.get("type"));
+        return bookListService.getListCount(mapinput);
     }
 
 

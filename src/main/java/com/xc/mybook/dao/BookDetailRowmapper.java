@@ -44,9 +44,10 @@ public class BookDetailRowmapper implements RowMapper {
             bookDetail.setCatagoryTagMain(resultSet.getString("catagory_tag_main"));
             bookDetail.setCatagoryTagSide(resultSet.getString("catagory_tag_side"));
             bookDetail.setBookStar(resultSet.getString("book_star"));
-            bookDetail.setUpdateDateYyyy(resultSet.getString("update_date_yyyy"));
+
             bookDetail.setUpdateDateMm(resultSet.getString("update_date_mm"));
             bookDetail.setUpdateDateDd(resultSet.getString("update_date_dd"));
+            bookDetail.setUpdateDateYyyy(resultSet.getString("update_date_yyyy"));
 
 
         }catch (Exception e){

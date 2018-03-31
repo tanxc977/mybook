@@ -16,10 +16,8 @@ public class BookListServiceIndex extends BookListServiceAbstract {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private final String sqlInquire = "select seqno,catagory_tag,update_date,book_url,book_name,book_desc,enter_date," +
-            "down_url,down_pwd,image_path,file_path,download_flag,catagory_tag_main,catagory_tag_side,update_date_yyyy," +
-            " update_date_mm,update_date_dd from book_detail where seqno > ? limit ?";
-
+    private final String sqlInquire = Constants.commonSqlPrefix +" limit ? , ?";
+    private final String sqlCount = "select count(*) as count from "+ Constants.bookDetailTable;
     @Override
     public Boolean checkInput(Map<String, String> map) {
         if(!map.containsKey("pageNo")){
@@ -31,6 +29,11 @@ public class BookListServiceIndex extends BookListServiceAbstract {
             return false;
         }
         return true;
+    }
+
+    @Override
+    public Integer getListCount(Map<String,String> map) {
+        return jdbcTemplate.queryForObject(sqlCount,Integer.class);
     }
 
     @Override

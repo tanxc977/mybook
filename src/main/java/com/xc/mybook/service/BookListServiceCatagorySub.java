@@ -16,12 +16,10 @@ public class BookListServiceCatagorySub extends BookListServiceAbstract {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private final String sqlInquire = "select seqno,catagory_tag,update_date,book_url,book_name,book_desc,enter_date," +
-            "down_url,down_pwd,image_path,file_path,download_flag,catagory_tag_main,catagory_tag_side,update_date_yyyy," +
-            " update_date_mm,update_date_dd from book_detail where seqno > ? limit ? " +
-            "where catagory_tag_main = ? and catagory_tag_side = ?";
+    private final String sqlInquire = Constants.commonSqlPrefix +
+            "where catagory_tag_main = ? and catagory_tag_side = ? limit ?, ?";
 
-
+    private final String sqlCount = "select count(*) as count from "+Constants.bookDetailTable+" where catagory_tag_main = ? and catagory_tag_side = ?";
     @Override
     public Boolean checkInput(Map<String, String> map) {
         if(!map.containsKey("pageNo")){
@@ -40,12 +38,20 @@ public class BookListServiceCatagorySub extends BookListServiceAbstract {
     }
 
     @Override
+    public Integer getListCount(Map<String,String> mapinput) {
+        String catagoryMain = mapinput.get("catagoryMain");
+        String catagorySub  = mapinput.get("catagorySub");
+
+        return jdbcTemplate.queryForObject(sqlCount,new Object[]{catagoryMain,catagorySub},Integer.class);
+    }
+
+    @Override
     public List<BookDetail> getDetail(Map<String, String> inputPara) {
         Integer pageNo = Integer.parseInt(inputPara.get("pageNo"));
         Integer pageStartId = (int) ((pageNo - 1) * Constants.pageNum);
         String catagoryMain = inputPara.get("catagoryMain");
         String catagorySub  = inputPara.get("catagorySub");
 
-        return jdbcTemplate.query(sqlInquire, new Object[]{pageStartId, new Double(Constants.pageNum).intValue(),catagoryMain,catagorySub},new BookDetailRowmapper());
+        return jdbcTemplate.query(sqlInquire, new Object[]{catagoryMain,catagorySub,pageStartId, new Double(Constants.pageNum).intValue()},new BookDetailRowmapper());
     }
 }
