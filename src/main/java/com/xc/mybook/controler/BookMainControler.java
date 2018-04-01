@@ -112,12 +112,56 @@ public class BookMainControler {
     }
 
 
+    //---------------------
+    //--以下三个 未经调试 需要再调试一下
 
 
+    @RequestMapping("/bookindex/catagory/{main}")
+    public String bookCatagoryHtml(Map<String,Object> map,@PathVariable("main") String main){
+        List<BookStatics> bookStaticsList = bookStaticsViewService.getList();
+        StringBuilder sb = new StringBuilder();
+        sb.append(Constants.listTypeCataMain);
+        sb.append("/");
+        sb.append(main);
+        map.put("type",sb.toString());
+        map.put("bookStaticsList",bookStaticsList);
+        return "/bookindex";
+    }
 
 
+    @RequestMapping("/booklistpage/catagory/{catagoryMain}")
+    public String mainpageHtml3(Map<String,Object> map, @PathVariable("catagoryMain") String catagoryMain){
+        Map<String,String> mapinput= new HashMap<>();
+
+        mapinput.put("type",Constants.listTypeCataMain);
+        mapinput.put("catagoryMain",catagoryMain);
+
+        Integer totalCount = bookDetailService.getBookListCount(mapinput);
+        map.put("totalCount",totalCount);
+        map.put("pageNum", new Double(Constants.pageNum).intValue());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("catagory/");
+        sb.append(catagoryMain);
+
+        map.put("type",sb.toString());
+
+        return "/booklistpage";
+    }
 
 
+    @RequestMapping("/bookpage/catagory/{main}/{pageno}")
+    public String bookPageCataMain(Map<String,Object> map,
+                            @PathVariable("main") String main,
+                            @PathVariable("pageno") String pageNo){
+        Map<String,String> mapInput = new HashMap<>();
+        mapInput.put("type",Constants.listTypeCataMain);
+        mapInput.put("catagoryMain",main);
+        mapInput.put("pageNo",pageNo);
+        List<BookDetail> booklist = bookDetailService.getBookListDefault2(mapInput);
+        map.put("bookDetailList",booklist);
+        return "/bookpage2";
+    }
 
 
 

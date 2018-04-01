@@ -1,5 +1,6 @@
 package com.xc.mybook.service;
 
+import com.xc.mybook.Constants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,13 +20,13 @@ public class BookListFactory {
 
     public BookListService getBookListService(String bookListType){
         switch (bookListType){
-            case "index":
+            case Constants.listTypeIndex:
                 return bookListServiceIndex;
-            case "datecata":
+            case Constants.listTypeDate:
                 return bookListServiceDate;
-            case "catagory":
+            case Constants.listTypeCataMain:
                 return bookListServiceCatagory;
-            case "catagorysub":
+            case Constants.listTypeCataSub:
                 return bookListServiceCatagorySub;
 
                 default:

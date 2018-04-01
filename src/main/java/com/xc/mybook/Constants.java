@@ -8,4 +8,10 @@ public class Constants {
             "update_date_yyyy,update_date_mm,update_date_dd,book_star from book_detail ";
     public static final String bookDetailTable="book_detail";
     public static final String bookStaticsViewInquireSql = "select update_date_yyyy,update_date_mm,count from book_statics_view";
+
+    public static final String listTypeIndex="index";
+    public static final String listTypeDate="datecata";
+    public static final String listTypeCataMain="catagory";
+    public static final String listTypeCataSub="catagorysub";
+
 }
