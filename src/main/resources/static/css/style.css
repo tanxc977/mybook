@@ -61,14 +61,14 @@ body{
     cursor: pointer;
 }
 
-.activity_title a{
+/*.activity_title a{
     display: inline;
     position: absolute;
     right:25px;
     font-size:14px;
     color: #545454;
     font-weight:100;
-}
+}*/
 .div_activity_img{
     position:absolute;
     top:0;

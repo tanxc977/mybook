@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
-      xmlns:javascript="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -24,18 +23,35 @@
         <!--<div class="box_shadow item_mg0_5">-->
         <!--test右侧边2-->
         <!--</div>-->
+
+ <!--           <form class="item_mg0_5 layui-form" action="#" th:action="@{/booklist/search}" th:object="${SearchBook}" method="post">  &lt;!&ndash; 提示：如果你不想用form，你可以换成div等任何一个普通元素 &ndash;&gt;
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <input type="text" th:field="*{bookName}" placeholder="搜索..." autocomplete="off" class="layui-input"/>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <div class="layui-input-block">
+                        <button type="submit" class="layui-btn">搜索</button>
+                    </div>
+                </div>
+            </form>-->
+        <div id="xxx1" class="item_mg0_5">
+            <div class="s-list">
+                <input type="text" placeholder="搜索..." class="layui-input" id="searchBook"/>
+                <button type="button" class="layui-btn" onclick="javascript:searchbook();">搜索</button>
+            </div>
+        </div>
         <div id="sidbar" class="item_mg0_5">
             <div class="s-list"><h3 class="sub">资源归档</h3>
                 <ul th:each="bookStatics:${bookStaticsList}">
                     <li>
-                        <!--<a th:href="@{javascript:datelist([[${bookStatics.updateDateYyyy}]],${bookStatics.updateDateMm});}">-->
-                        <!--<a href="javascript:;" th:onlick="datelist(${bookStatics.updateDateYyyy},${bookStatics.updateDateMm});">-->
+
                         <a th:onclick="'javascript:datelist(\''+${bookStatics.updateDateYyyy}+'\',\''+${bookStatics.updateDateMm}+'\')'">
                             <span th:text="${bookStatics.updateDateYyyy}"></span>
                             <span>年</span>
                             <span th:text="${bookStatics.updateDateMm}"></span>
                             <span>月</span>
-                            <!--[[${bookStatics.updateDateYyyy}]]年[[${bookStatics.updateDateMm}]]月-->
                         </a>&nbsp;
                         <span>(</span>
                         <span th:text="${bookStatics.count}"></span>
@@ -45,11 +61,7 @@
                 </ul>
             </div>
         </div>
-        <div id="xxx" class="item_mg0_5">
-            <div class="s-list">
-                xxx1
-            </div>
-        </div>
+
         <div id="xxx2" class="item_mg0_5">
             <div class="s-list">
                 xxx2
@@ -58,31 +70,49 @@
     </div>
 </div>
 
-<script src="../layui.js"></script>
+<!--<script src="../../../layui.js"></script>-->
 <script th:inline="javascript">
     //JavaScript代码区域
     /*<![CDATA[*/
     var type = /*[[${type}]]*/ 'a';
     var $;
-    layui.use(['laypage', 'layer'], function () {
+    layui.use(['laypage', 'layer', 'form'], function () {
         var laypage = layui.laypage;
+        var form = layui.form;
         $ = layui.$;
-        var loadurl = "/booklistpage/"+type;
+        var re = /^bookdetail/;
+        if (re.test(type)) {
+            var loadurl = "/bookdetailpage/" + type;
+            $('#layout-left').load(loadurl, function () {
+
+            });
+        } else {
+            var loadurl = "/booklistpage/" + type;
+            $('#layout-left').load(loadurl, function () {
+
+            });
+        }
+
+
+    });
+
+    /*]]>*/
+    function datelist(year, month) {
+        var params = {};
+        var loadurl = "/booklistpage/datecata/" + year + "/" + month;
+        params["year"] = year;
+        params["month"] = month;
         $('#layout-left').load(loadurl, function () {
 
         });
-
-    });
-    /*]]>*/
-    function datelist(year,month) {
-        var params={};
-        var loadurl="/booklistpage/datecata/"+year+"/"+month;
-        params["year"]=year;
-        params["month"]=month;
-        $('#layout-left').load(loadurl,  function (){
+    };
+    function searchbook() {
+        var data={};
+        data['bookSearch'] = $("[id='searchBook']").val();
+        $('#layout-left').load("/booklist/search",data, function () {
 
         });
-    };
+    }
 </script>
 </body>
 </html>

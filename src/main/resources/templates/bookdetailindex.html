@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
-    <title>我的主页</title>
-    <link rel="stylesheet" href="../css/layui.css"/>
-    <link rel="stylesheet" href="../css/style.css"/>
+    <title>bookdetail index 主页</title>
+    <link rel="stylesheet" href="../../css/layui.css"/>
+    <link rel="stylesheet" href="../../css/style.css"/>
 </head>
 <body>
 <div class="layui-layout layui-layout-admin ">
@@ -87,13 +87,17 @@
         © mbook.com - 我的图书馆
     </div>
 </div>
-<script src="../layui.js"></script>
-<script>
+<script src="../../layui.js"></script>
+<script th:inline="javascript">
     //JavaScript代码区域
+    /*<![CDATA[*/
     var $;
     layui.use(['jquery','element'], function () {
         $ = layui.$;
-        $('#divmain').load("/bookindex/index", function () {
+        var seqno = /*[[${seqno}]]*/ '1';
+        var loadurl="/bookindex/bookdetailpage/"+seqno;
+        // var loadurl="/bookindex/bookdetailpage/6000";
+        $('#divmain').load(loadurl, function () {
 
         });
     });
@@ -109,6 +113,7 @@
 
         });
     };
+    /*]]>*/
 </script>
 </body>
 </html>

@@ -18,6 +18,9 @@ public class BookListFactory {
     @Autowired
     private BookListServiceCatagorySub bookListServiceCatagorySub;
 
+    @Autowired
+    private BookListSearch bookListSearch;
+
     public BookListService getBookListService(String bookListType){
         switch (bookListType){
             case Constants.listTypeIndex:
@@ -28,6 +31,8 @@ public class BookListFactory {
                 return bookListServiceCatagory;
             case Constants.listTypeCataSub:
                 return bookListServiceCatagorySub;
+            case Constants.listSearch:
+                return bookListSearch;
 
                 default:
                     return bookListServiceIndex;

@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 public class MybookApplication {
 
-	@RequestMapping("/")
-	public String home(){
-		return "hello home mybook !";
-	}
+//	@RequestMapping("/")
+//	public String home(){
+//		return "hello home mybook !";
+//	}
 
 	public static void main(String[] args) {
 		

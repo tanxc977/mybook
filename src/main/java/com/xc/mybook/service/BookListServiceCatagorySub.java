@@ -30,7 +30,7 @@ public class BookListServiceCatagorySub extends BookListServiceAbstract {
         }catch (NumberFormatException numexp){
             return false;
         }
-        if(!map.containsKey("catagory_tag_main") || !map.containsKey("catagory_tag_side")){
+        if(!map.containsKey("catagoryMain") || !map.containsKey("catagorySub")){
             return false;
         }else{
             return true;

@@ -1,4 +1,4 @@
-drop if exists table book_detail;
+drop table book_detail;
 CREATE TABLE book_detail (
 seqno bigint NOT NULL AUTO_INCREMENT ,
 catagory_tag  varchar(30),
@@ -25,4 +25,4 @@ drop VIEW book_statics_view;
 CREATE VIEW book_statics_view as SELECT update_date_yyyy,update_date_mm,count(*) as count
                                  from book_detail GROUP BY update_date_yyyy,update_date_mm;
 
-INSERT INTO book_detail(catagory_tag,update_date,book_url,book_name,book_desc,enter_date,down_url,down_pwd,image_path,file_path,download_flag) SELECT catagory_tag,update_date,book_url,book_name,book_desc,enter_date,down_url,down_pwd,image_path,file_path,download_flag from book LIMIT 13,10;
+INSERT INTO book_detail(catagory_tag,update_date,book_url,book_name,book_desc,enter_date,down_url,down_pwd,image_path,file_path,download_flag) SELECT catagory_tag,update_date,book_url,book_name,book_desc,enter_date,down_url,down_pwd,image_path,file_path,download_flag from book LIMIT 0,16;

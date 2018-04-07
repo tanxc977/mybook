@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+<div class="layui-row mainbody_left">
+
+    <div  class="div_activity box_shadow item_mg0_5">
+        <div class="div_activity_img">
+            <img width="180px" height="265px" th:src="${book.imagePath}"/>
+        </div>
+        <div class="activity_content">
+            <div class="activity_title">
+                <label th:text="${book.bookName}"> 大清帝国</label>
+            </div>
+            <div class="label_icon">
+                <span th:text="${book.updateDate}">2018.03.21</span>
+            </div>
+            <div id="bookitem2">
+                <p th:text="${book.bookDesc}">test2</p>
+                <p th:text="${fileList}">fileList</p>
+                <a th:href="${fileList}" th:text="${fileList}"></a>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+</html>

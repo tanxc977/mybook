@@ -9,7 +9,7 @@ import com.xc.mybook.utils.Config;
 
 import java.sql.ResultSet;
 
-public class BookDetailRowmapper implements RowMapper {
+public class BookDetailDRowmapper implements RowMapper {
     private static final Logger logger = LoggerFactory.getLogger(BookDetailRowmapper.class);
 
     @Override
@@ -20,29 +20,17 @@ public class BookDetailRowmapper implements RowMapper {
             bookDetail.setCatagoryTag(resultSet.getString("catagory_tag"));
             bookDetail.setBookName(resultSet.getString("book_name"));
             bookDetail.setEnterDate(resultSet.getTimestamp("enter_date"));
-            String desc = resultSet.getString("book_desc");
-            StringBuilder sbDesc = new StringBuilder();
-            if(desc.length()< Constants.subContentLength){
-                sbDesc.append(desc);
-            }else if(desc.length() >= Constants.subContentLength){
-                sbDesc.append(desc.substring(0,Constants.subContentLength));
 
-            }
-            sbDesc.append("...");
-            bookDetail.setBookDesc(sbDesc.toString());
-
-//            bookDetail.setBookDesc(resultSet.getString("book_desc"));
+            bookDetail.setBookDesc(resultSet.getString("book_desc"));
             bookDetail.setBookUrl(resultSet.getString("book_url"));
             bookDetail.setDownFlag(resultSet.getString("download_flag"));
             bookDetail.setDownUrl(resultSet.getString("down_url"));
             bookDetail.setDownPwd(resultSet.getString("down_pwd"));
             String imagePath = resultSet.getString("image_path");
 
-//            String imageFile = imagePath.substring(imagePath.lastIndexOf("/pic"));
             String imageFile = imagePath.substring(imagePath.lastIndexOf("/"));
-//            bookDetail.setImagePath(Constants.imagePath+imageFile);
             bookDetail.setImagePath(Config.getInstance().get("imagePath")+imageFile);
-//            bookDetail.setImagePath(imagePath);
+
             bookDetail.setFilePath(resultSet.getString("file_path"));
             bookDetail.setUpdateDate(resultSet.getString("update_date"));
             bookDetail.setCatagoryTagMain(resultSet.getString("catagory_tag_main"));
