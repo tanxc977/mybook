@@ -7,7 +7,7 @@
 <body>
 <div class="layui-row mainbody_left">
 
-    <div  class="div_activity box_shadow item_mg0_5">
+    <div  class="div_activity_detail box_shadow item_mg0_5">
         <div class="div_activity_img">
             <img width="180px" height="265px" th:src="${book.imagePath}"/>
         </div>
@@ -20,8 +20,10 @@
             </div>
             <div id="bookitem2">
                 <p th:text="${book.bookDesc}">test2</p>
-                <p th:text="${fileList}">fileList</p>
-                <a th:href="${fileList}" th:text="${fileList}"></a>
+                <!--<p th:text="${fileList}">fileList</p>-->
+                <div th:each="bookDownload: ${fileList}">
+                    <a th:href="${bookDownload.bookUrl}" th:text="${bookDownload.bookType}"></a>
+                </div>
             </div>
 
         </div>

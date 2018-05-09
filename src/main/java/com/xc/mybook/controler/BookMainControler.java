@@ -1,24 +1,33 @@
 package com.xc.mybook.controler;
 
 import com.xc.mybook.Constants;
+import com.xc.mybook.dto.BookDownload;
 import com.xc.mybook.entity.BookDetail;
 import com.xc.mybook.entity.BookStatics;
 import com.xc.mybook.service.BookDetailService;
 import com.xc.mybook.service.BookStaticsViewService;
 import com.xc.mybook.utils.Config;
+import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.UnsupportedEncodingException;
+import javax.activation.MimetypesFileTypeMap;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 
 @Controller
 public class BookMainControler {
@@ -296,13 +305,45 @@ public class BookMainControler {
     public String bookDetailSeq(Map<String,Object> map, @PathVariable("seqno") String seqno){
         BookDetail bookDetail = bookDetailService.getSingleBookBySeqNo(seqno);
         String filePath = bookDetail.getFilePath();
+        List<BookDownload> fileList = new ArrayList<BookDownload>();
 
         if(filePath.trim().length() != 0 && filePath != null){
-            StringBuilder sb = new StringBuilder();
-            sb.append(Config.getInstance().get("filepath"));
-            sb.append(filePath.substring(filePath.indexOf("ebook")+5));
-            sb.append("大漠苍狼 - 南派三叔.epub");
-            map.put("fileList",sb.toString());
+//            StringBuilder sb = new StringBuilder();
+            String filepathprefix =Config.getInstance().get("filepath");
+//            sb.append(filepathprefix);
+            String dirName = filePath.substring(filePath.lastIndexOf("/")+1);
+//            sb.append(dirName);
+            File filepath = new File(Constants.localFilePath+"\\"+dirName);
+
+            if(!filepath.isDirectory()){
+                map.put("fileList",fileList);
+            }else if(filepath.isDirectory()){
+                String[] filesublist = filepath.list();
+                for(int i=0;i<filesublist.length;i++){
+                    BookDownload bookDownload = new BookDownload();
+
+                    File filesub = new File(filepath+"\\"+filesublist[i]);
+                    String filename = filesub.getName();
+                    String bookType = filename.substring(filename.lastIndexOf(".")+1);
+                    String bookName = filename.substring(0,filename.lastIndexOf("."));
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append(filepathprefix);
+                    sb.append("/");
+                    sb.append(bookType);
+                    sb.append("/");
+                    sb.append(dirName);
+
+                    bookDownload.setBookName(bookName);
+                    bookDownload.setBookType(bookType);
+                    bookDownload.setBookUrl(sb.toString());
+
+                    fileList.add(bookDownload);
+                }
+            }
+
+//            sb.append("大漠苍狼 - 南派三叔.epub");
+            map.put("fileList",fileList);
         }
 
         map.put("book",bookDetail);
@@ -310,6 +351,87 @@ public class BookMainControler {
     }
     //-------------明细页结束--------------------
 
+
+    /***
+     * 文件下载
+     * @param filepath
+     * @return
+     */
+    @RequestMapping("/bookdir/{bookType}/{filepath}")
+    public void bookDownload(HttpServletRequest req, HttpServletResponse res, @PathVariable("filepath") String filepath,
+                             @PathVariable("bookType") String bookType){
+
+        String userAgent = req.getHeader("user-agent").toLowerCase();
+
+
+        byte[] buff = new byte[1024];
+        BufferedInputStream bis = null;
+        OutputStream os = null;
+
+        try {
+            String fileDirName = URLDecoder.decode(filepath,"utf-8");
+//            filename = Constants.localFilePath + fileDirName +"\\"+ fileDirName + "." + bookType;
+            File downloadFile = null;
+            String bookDir = Constants.localFilePath + fileDirName;
+            File fileDir = new File(bookDir);
+            if(!fileDir.isDirectory()){
+                throw new IOException();
+            }else if(fileDir.isDirectory()){
+                File[] files = fileDir.listFiles();
+                for (int i=0;i<files.length;i++){
+                    String fileName = files[i].getName();
+                    String fileType = fileName.substring(fileName.lastIndexOf(".")+1);
+                    if (fileType.equalsIgnoreCase(bookType)){
+                        downloadFile = files[i];
+                    }
+                }
+            }
+
+//            File downloadFile = new File(filename);
+
+
+            res.reset();
+            res.setCharacterEncoding("utf-8");
+
+            String filenameDownload = null;
+            if (userAgent.contains("msie") || userAgent.contains("like gecko") ) {
+                // win10 ie edge 浏览器 和其他系统的ie
+                filenameDownload = URLEncoder.encode(downloadFile.getName(), "UTF-8");
+            } else {
+                // fe
+                filenameDownload = new String(downloadFile.getName().getBytes("UTF-8"), "iso-8859-1");
+            }
+
+            res.addHeader("Content-Disposition", "attachment;fileName=" + filenameDownload);
+            res.addHeader("Content-Length",Long.toString(downloadFile.length()));
+            res.setContentType("application/octet-stream");
+            os = res.getOutputStream();
+
+            bis = new BufferedInputStream(FileUtils.openInputStream(downloadFile));
+            int i = bis.read(buff);
+            while(i!=-1){
+                os.write(buff,0,buff.length);
+                os.flush();
+                i = bis.read(buff);
+            }
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }finally {
+            if(bis != null){
+                try {
+                    bis.close();
+                }catch (IOException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+
+
+
+    }
 
     //---------------搜索-----------------------
     @RequestMapping("/booklist/search")
@@ -336,6 +458,26 @@ public class BookMainControler {
         map.put("type",sb.toString());
 
         return "/booklistpage";
+    }
+
+    /**
+     * 返回新增书籍页
+     * @return
+     */
+    @RequestMapping("/bookdetail/addbookpage")
+    public String addBook(){
+        return "bookaddpage";
+    }
+
+    /**
+     * 新增书籍
+     * @param map
+     * @param bookDetail
+     * @return
+     */
+    @RequestMapping("/bookdetail/addbook")
+    public String addBook(Map<String,Object> map,@RequestBody String bookDetail){
+        return "bookaddpage";
     }
 
     @RequestMapping("/bookpage/search/{bookSearch}/{pageNo}")

@@ -185,3 +185,14 @@ h3.sub{
 .s-list ul li:hover{
     background-color: #f2f2f2;
 }
+
+.div_activity_detail{
+    position: relative;
+    width:100%;
+}
+.activity_content_detail{
+    position: relative;
+    left: 195px;
+    top:10px;
+    width:550px;
+}

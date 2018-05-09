@@ -18,9 +18,11 @@ public class Constants {
     public static final String listTypeBookDetail ="bookdetail";
     public static final String listSearch = "search";
 
+    public static final String localFilePath = "H:\\mbook\\ebook\\";
 
     //以下的已转移到config文件中
     public static final String imagePath = "/bookimage";
     public static final String filePath = "/bookdir";
+
 
 }
