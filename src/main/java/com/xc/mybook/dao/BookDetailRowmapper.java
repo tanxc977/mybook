@@ -4,13 +4,18 @@ import com.xc.mybook.Constants;
 import com.xc.mybook.entity.BookDetail;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import com.xc.mybook.utils.Config;
 
+import java.io.File;
 import java.sql.ResultSet;
 
 public class BookDetailRowmapper implements RowMapper {
     private static final Logger logger = LoggerFactory.getLogger(BookDetailRowmapper.class);
+
+    @Autowired
+    private Config config;
 
     @Override
     public BookDetail mapRow(ResultSet resultSet, int i) {
@@ -38,11 +43,21 @@ public class BookDetailRowmapper implements RowMapper {
             bookDetail.setDownPwd(resultSet.getString("down_pwd"));
             String imagePath = resultSet.getString("image_path");
 
-//            String imageFile = imagePath.substring(imagePath.lastIndexOf("/pic"));
-            String imageFile = imagePath.substring(imagePath.lastIndexOf("/"));
+            String imageFile = "";
+            if(-1 != imagePath.lastIndexOf("/") && imagePath != null){
+                imageFile = imagePath.substring(imagePath.lastIndexOf("/")+1);
+            }
+            if(-1 != imagePath.lastIndexOf("\\") && imagePath != null){
+                imageFile = imagePath.substring(imagePath.lastIndexOf("\\")+1);
+            }
+            logger.info("imageFile is: "+ imageFile);
+//            String imageFile = imagePath.substring(imagePath.lastIndexOf("/"));
 //            bookDetail.setImagePath(Constants.imagePath+imageFile);
-            bookDetail.setImagePath(Config.getInstance().get("imagePath")+imageFile);
+            bookDetail.setImagePath(config.get("imagePath")+ File.separator+imageFile);
+
+
 //            bookDetail.setImagePath(imagePath);
+            logger.info("after set image path ");
             bookDetail.setFilePath(resultSet.getString("file_path"));
             bookDetail.setUpdateDate(resultSet.getString("update_date"));
             bookDetail.setCatagoryTagMain(resultSet.getString("catagory_tag_main"));

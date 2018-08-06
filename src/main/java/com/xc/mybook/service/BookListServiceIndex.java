@@ -16,7 +16,7 @@ public class BookListServiceIndex extends BookListServiceAbstract {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
-    private final String sqlInquire = Constants.commonSqlPrefix +" limit ? , ?";
+    private final String sqlInquire = Constants.commonSqlPrefix +" order by enter_date desc "+" limit ? , ?";
     private final String sqlCount = "select count(*) as count from "+ Constants.bookDetailTable;
     @Override
     public Boolean checkInput(Map<String, String> map) {

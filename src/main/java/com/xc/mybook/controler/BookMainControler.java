@@ -7,22 +7,16 @@ import com.xc.mybook.entity.BookStatics;
 import com.xc.mybook.service.BookDetailService;
 import com.xc.mybook.service.BookStaticsViewService;
 import com.xc.mybook.utils.Config;
-import org.apache.commons.io.FileUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import javax.activation.MimetypesFileTypeMap;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,20 +32,23 @@ public class BookMainControler {
      */
     private static final Logger logger = LoggerFactory.getLogger(BookMainControler.class);
 
+
     @Autowired
     BookDetailService bookDetailService;
 
     @Autowired
     BookStaticsViewService bookStaticsViewService;
 
-    @RequestMapping("/")
+    @RequestMapping(value={"/","/index"})
     public String indexHtml(){
+        logger.info("log on index : {}",getClass());
+
         return "/index";
     }
 
 //    主页显示
     @RequestMapping("/bookindex/{type}")
-    public String bookindexHtml(Map<String,Object> map,@PathVariable("type") String type){
+    public String indexFrame(Map<String,Object> map,@PathVariable("type") String type){
         List<BookStatics> bookStaticsList = bookStaticsViewService.getList();
         map.put("type",type);
         map.put("bookStaticsList",bookStaticsList);
@@ -60,14 +57,12 @@ public class BookMainControler {
 
 //    主页显示
     @RequestMapping("/booklistpage/index")
-    public String mainpageHtml2(Map<String,Object> map){
+    public String indexBookList(Map<String,Object> map){
 
         Map<String,String> mapinput= new HashMap<>();
         mapinput.put("type","index");
 
-        Integer totalCount = bookDetailService.getBookListCount(mapinput);
-
-        map.put("totalCount",totalCount);
+        map.put("totalCount",getBookListCount(mapinput));
         map.put("pageNum", new Double(Constants.pageNum).intValue());
         map.put("pageNo",1);
         map.put("type","index");
@@ -79,15 +74,14 @@ public class BookMainControler {
 
 //   按日期显示
     @RequestMapping("/booklistpage/datecata/{year}/{month}")
-    public String mainpageHtml3(Map<String,Object> map, @PathVariable("year") String year, @PathVariable("month") String month){
+    public String indexBookDateCatagory(Map<String,Object> map, @PathVariable("year") String year, @PathVariable("month") String month){
         Map<String,String> mapinput= new HashMap<>();
 
         mapinput.put("type","datecata");
         mapinput.put("year",year);
         mapinput.put("month",month);
 
-        Integer totalCount = bookDetailService.getBookListCount(mapinput);
-        map.put("totalCount",totalCount);
+        map.put("totalCount",getBookListCount(mapinput));
         map.put("pageNum", new Double(Constants.pageNum).intValue());
 
         StringBuilder sb = new StringBuilder();
@@ -103,7 +97,7 @@ public class BookMainControler {
 
 
     @RequestMapping("/bookpage/{type}/{pageNum}")
-    public String bookPage2(Map<String,Object> map,@PathVariable("type") String type,@PathVariable("pageNum") String pageNo){
+    public String bookListContentCatagory(Map<String,Object> map,@PathVariable("type") String type,@PathVariable("pageNum") String pageNo){
         Map<String,String> mapInput = new HashMap<>();
         mapInput.put("type",type);
         mapInput.put("pageNo",pageNo);
@@ -115,7 +109,7 @@ public class BookMainControler {
 
 //    按日期显示
     @RequestMapping("/bookpage/datecata/{year}/{month}/{pageno}")
-    public String bookPage2(Map<String,Object> map,
+    public String bookListDateCatagory(Map<String,Object> map,
                             @PathVariable("year") String year,@PathVariable("month") String month,
                             @PathVariable("pageno") String pageNo){
         Map<String,String> mapInput = new HashMap<>();
@@ -138,7 +132,7 @@ public class BookMainControler {
      * @return
      */
     @RequestMapping("/bookindex/catagory/{main}")
-    public String bookCatagoryHtml(Map<String,Object> map,@PathVariable("main") String main){
+    public String bookCatagoryContentMain(Map<String,Object> map,@PathVariable("main") String main){
         List<BookStatics> bookStaticsList = bookStaticsViewService.getList();
         StringBuilder sb = new StringBuilder();
         sb.append(Constants.listTypeCataMain);
@@ -158,14 +152,13 @@ public class BookMainControler {
      * @return
      */
     @RequestMapping("/booklistpage/catagory/{catagoryMain}")
-    public String mainpageHtml3(Map<String,Object> map, @PathVariable("catagoryMain") String catagoryMain){
-        Map<String,String> mapinput= new HashMap<>();
+    public String bookListCatagoryContentMain(Map<String,Object> map, @PathVariable("catagoryMain") String catagoryMain){
 
+        Map<String,String> mapinput= new HashMap<>();
         mapinput.put("type",Constants.listTypeCataMain);
         mapinput.put("catagoryMain",catagoryMain);
 
-        Integer totalCount = bookDetailService.getBookListCount(mapinput);
-        map.put("totalCount",totalCount);
+        map.put("totalCount",getBookListCount(mapinput));
         map.put("pageNum", new Double(Constants.pageNum).intValue());
 
         StringBuilder sb = new StringBuilder();
@@ -186,7 +179,7 @@ public class BookMainControler {
      * @return
      */
     @RequestMapping("/bookpage/catagory/{main}/{pageno}")
-    public String bookPageCataMain(Map<String,Object> map,
+    public String bookContentListCatagoryMainPage(Map<String,Object> map,
                             @PathVariable("main") String main,
                             @PathVariable("pageno") String pageNo){
         Map<String,String> mapInput = new HashMap<>();
@@ -209,7 +202,7 @@ public class BookMainControler {
      * @return
      */
     @RequestMapping("/bookindex/catagorysub/{main}/{sub}")
-    public String bookCatagorySideHtml(Map<String,Object> map,@PathVariable("main") String main,
+    public String bookContentListCatagorySidePage(Map<String,Object> map,@PathVariable("main") String main,
                                        @PathVariable("sub") String sub){
         List<BookStatics> bookStaticsList = bookStaticsViewService.getList();
         StringBuilder sb = new StringBuilder();
@@ -240,8 +233,7 @@ public class BookMainControler {
         mapinput.put("type",Constants.listTypeCataSub);
         mapinput.put("catagoryMain",catagoryMain);
         mapinput.put("catagorySub",catagorySub);
-        Integer totalCount = bookDetailService.getBookListCount(mapinput);
-        map.put("totalCount",totalCount);
+        map.put("totalCount",getBookListCount(mapinput));
         map.put("pageNum", new Double(Constants.pageNum).intValue());
 
         StringBuilder sb = new StringBuilder();
@@ -308,11 +300,11 @@ public class BookMainControler {
         List<BookDownload> fileList = new ArrayList<BookDownload>();
 
         if(filePath.trim().length() != 0 && filePath != null){
-//            StringBuilder sb = new StringBuilder();
-            String filepathprefix =Config.getInstance().get("filepath");
-//            sb.append(filepathprefix);
+
+            String filepathprefix =Config.get("filepath");
+
             String dirName = filePath.substring(filePath.lastIndexOf("/")+1);
-//            sb.append(dirName);
+
             File filepath = new File(Constants.localFilePath+"\\"+dirName);
 
             if(!filepath.isDirectory()){
@@ -332,7 +324,7 @@ public class BookMainControler {
                     sb.append("/");
                     sb.append(bookType);
                     sb.append("/");
-                    sb.append(dirName);
+                    sb.append(seqno);
 
                     bookDownload.setBookName(bookName);
                     bookDownload.setBookType(bookType);
@@ -342,7 +334,6 @@ public class BookMainControler {
                 }
             }
 
-//            sb.append("大漠苍狼 - 南派三叔.epub");
             map.put("fileList",fileList);
         }
 
@@ -352,13 +343,68 @@ public class BookMainControler {
     //-------------明细页结束--------------------
 
 
+
+
+    //---------------搜索-----------------------
+    @RequestMapping("/booklist/search")
+    public String bookSearch(Map<String,Object> map, @RequestBody String searchBook){
+        Map<String,String> mapinput= new HashMap<>();
+
+        mapinput.put("type",Constants.listSearch);
+        String searchBookLocal = "";
+        try {
+            searchBookLocal = URLDecoder.decode(searchBook.split("=")[1],"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            searchBookLocal = searchBook;
+        }
+        mapinput.put("searchBook", searchBookLocal);
+
+        map.put("totalCount",getBookListCount(mapinput));
+        map.put("pageNum", new Double(Constants.pageNum).intValue());
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("search/");
+        sb.append(searchBookLocal);
+        logger.info("booklistpage type is :"+ sb.toString());
+        map.put("type",sb.toString());
+
+        return "/booklistpage";
+    }
+
+
+
+    @RequestMapping("/bookpage/search/{bookSearch}/{pageNo}")
+    public String bookSearchList(Map<String,Object> map,@PathVariable("bookSearch") String bookSearch,
+                                 @PathVariable("pageNo") String pageNo){
+        Map<String,String> mapInput = new HashMap<>();
+        mapInput.put("type",Constants.listSearch);
+        mapInput.put("searchBook",bookSearch);
+        mapInput.put("pageNo",pageNo);
+        logger.info("bookSearchList para:" + mapInput.toString());
+        List<BookDetail> booklist = bookDetailService.getBookListDefault2(mapInput);
+        map.put("bookDetailList",booklist);
+        return "/bookpage2";
+    }
+    //---------------搜索结束-----------------------
+
+    //子函数
+
+    private Integer getBookListCount(Map<String,String> mapinput){
+        return bookDetailService.getBookListCount(mapinput);
+    }
+
+
+
+    //--------------------------Deprecated---------------------------------------------------------
     /***
      * 文件下载
      * @param filepath
      * @return
      */
-    @RequestMapping("/bookdir/{bookType}/{filepath}")
-    public void bookDownload(HttpServletRequest req, HttpServletResponse res, @PathVariable("filepath") String filepath,
+//    @Deprecated
+//    @RequestMapping(value = "/bookdir/{bookType}/{filepath}",produces = "application/json;charset=utf-8")
+/*    public void bookDownload(HttpServletRequest req, HttpServletResponse res, @PathVariable("filepath") String filepath,
                              @PathVariable("bookType") String bookType){
 
         String userAgent = req.getHeader("user-agent").toLowerCase();
@@ -370,7 +416,6 @@ public class BookMainControler {
 
         try {
             String fileDirName = URLDecoder.decode(filepath,"utf-8");
-//            filename = Constants.localFilePath + fileDirName +"\\"+ fileDirName + "." + bookType;
             File downloadFile = null;
             String bookDir = Constants.localFilePath + fileDirName;
             File fileDir = new File(bookDir);
@@ -387,8 +432,6 @@ public class BookMainControler {
                 }
             }
 
-//            File downloadFile = new File(filename);
-
 
             res.reset();
             res.setCharacterEncoding("utf-8");
@@ -402,7 +445,10 @@ public class BookMainControler {
                 filenameDownload = new String(downloadFile.getName().getBytes("UTF-8"), "iso-8859-1");
             }
 
-            res.addHeader("Content-Disposition", "attachment;fileName=" + filenameDownload);
+            String fileName = filenameDownload.substring(0,filenameDownload.lastIndexOf("."));
+            String fileType = filenameDownload.substring(filenameDownload.lastIndexOf(".")+1);
+
+            res.addHeader("Content-Disposition", "attachment;fileName=" + fileName + "." + fileType);
             res.addHeader("Content-Length",Long.toString(downloadFile.length()));
             res.setContentType("application/octet-stream");
             os = res.getOutputStream();
@@ -429,68 +475,6 @@ public class BookMainControler {
             }
         }
 
+    }*/
 
-
-    }
-
-    //---------------搜索-----------------------
-    @RequestMapping("/booklist/search")
-    public String bookSearch(Map<String,Object> map, @RequestBody String searchBook){
-        Map<String,String> mapinput= new HashMap<>();
-
-        mapinput.put("type",Constants.listSearch);
-        String searchBookLocal = null;
-        try {
-            searchBookLocal = URLDecoder.decode(searchBook.split("=")[1],"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            searchBookLocal = searchBook;
-        }
-        mapinput.put("searchBook", searchBookLocal);
-        Integer totalCount = bookDetailService.getBookListCount(mapinput);
-        map.put("totalCount",totalCount);
-        map.put("pageNum", new Double(Constants.pageNum).intValue());
-
-        StringBuilder sb = new StringBuilder();
-        sb.append("search/");
-        sb.append(searchBookLocal);
-        logger.info("booklistpage type is :"+ sb.toString());
-        map.put("type",sb.toString());
-
-        return "/booklistpage";
-    }
-
-    /**
-     * 返回新增书籍页
-     * @return
-     */
-    @RequestMapping("/bookdetail/addbookpage")
-    public String addBook(){
-        return "bookaddpage";
-    }
-
-    /**
-     * 新增书籍
-     * @param map
-     * @param bookDetail
-     * @return
-     */
-    @RequestMapping("/bookdetail/addbook")
-    public String addBook(Map<String,Object> map,@RequestBody String bookDetail){
-        return "bookaddpage";
-    }
-
-    @RequestMapping("/bookpage/search/{bookSearch}/{pageNo}")
-    public String bookSearchList(Map<String,Object> map,@PathVariable("bookSearch") String bookSearch,
-                                 @PathVariable("pageNo") String pageNo){
-        Map<String,String> mapInput = new HashMap<>();
-        mapInput.put("type",Constants.listSearch);
-        mapInput.put("searchBook",bookSearch);
-        mapInput.put("pageNo",pageNo);
-        logger.info("bookSearchList para:" + mapInput.toString());
-        List<BookDetail> booklist = bookDetailService.getBookListDefault2(mapInput);
-        map.put("bookDetailList",booklist);
-        return "/bookpage2";
-    }
-    //---------------搜索结束-----------------------
 }
