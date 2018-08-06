@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xc.mybook.Mapper.BookDetailMapper">
+    <insert id="addNewBook" parameterType="com.xc.mybook.entity.BookDetail">
+        insert into book_detail(catagory_Tag_Main,catagory_Tag_Side,update_Date_Yyyy,update_Date_Mm,update_Date_Dd,catagory_Tag,
+                                update_Date,book_Url,book_Name,book_Desc,enter_Date,down_Url,down_Pwd,image_Path,
+                                file_Path,download_Flag,book_Star)
+                         values(#{catagoryTagMain},#{catagoryTagSide},#{updateDateYyyy},#{updateDateMm},
+                                #{updateDateDd},#{catagoryTag},#{updateDate},#{bookUrl},#{bookName},#{bookDesc},
+                                #{enterDate},#{downUrl},#{downPwd},#{imagePath},#{filePath},
+                                #{downFlag},#{bookStar})
+    </insert>
+</mapper>
