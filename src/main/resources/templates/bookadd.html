@@ -52,7 +52,7 @@
                         <tbody id="demoList"></tbody>
                     </table>
                 </div>
-                <button style= "display: block" type="button" class="layui-btn" id="uploadButton">开始上传</button>
+                <button style= "display: none" type="button" class="layui-btn" id="uploadButton">开始上传</button>
             </div>
             <form class="layui-form" enctype="multipart/form-data"  method="post" action="">
                 <div class="layui-form-item">
@@ -128,6 +128,7 @@
 
         //多文件列表示例
         var demoListView = $('#demoList');
+        var uploadError = false;
         var bookName = "";
         var uploadListIns = upload.render({
             elem: '#testList'
@@ -174,6 +175,7 @@
                     return delete this.files[index]; //删除文件队列已经上传成功的文件
                 }
                 alert(res.message);
+                uploadError=true;
                 this.error(index, upload);
             }
             ,error: function(index, upload){
@@ -188,6 +190,9 @@
         // form.on('submit(demo1)', function(data){
         $("#testListAction").click(function(){
              $("#uploadButton").click();
+             if(uploadError){
+                 return false;
+             }
             if(bookName==""){
                 layer.msg('请选择上传文件', {icon: 2, time: 2000});
                 return false;

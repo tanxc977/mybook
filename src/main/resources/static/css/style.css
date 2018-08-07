@@ -29,6 +29,12 @@ body{
     height:140px;
     width:550px;
 }
+.activity_content a:hover{
+    color:#393533;
+    cursor: pointer;
+}
+
+
 .activity_link{
     color: #D2D2D2;
     position: relative;
@@ -195,4 +201,14 @@ h3.sub{
     left: 195px;
     top:10px;
     width:550px;
+}
+
+.download_td{
+    background: none repeat scroll 0 0 #F2F2F2;
+
+    color: #666666;
+    font-size: 12px;
+    height: 30px;
+    margin: 15px 0 10px;
+    padding: 10px 0 0 10px;
 }
