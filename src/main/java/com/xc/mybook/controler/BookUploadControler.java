@@ -60,18 +60,26 @@ public class BookUploadControler {
     @RequestMapping(value = "/upload/batch/", method = RequestMethod.POST)
     public JsonResult handleFileUpload(HttpServletRequest request){
         logger.info("uplaod batch");
+
         List<MultipartFile> files = ((MultipartHttpServletRequest) request)
                 .getFiles("file");
-        JsonResult jsonResult = new JsonResult();
-        MultipartFile file = null;
-        BufferedOutputStream stream = null;
+
+        MultipartFile file;
+        BufferedOutputStream stream ;
+
         for (int i = 0; i < files.size(); ++i) {
             file = files.get(i);
 
+            if (getFileOut(file).exists()){
+                return packJsonResult("dupFile",i);
+            }
+
             File fileout = getFileOut(file);
+
             if(!fileout.getParentFile().exists()){
                 fileout.getParentFile().mkdirs();
             }
+
 
             if (!file.isEmpty()) {
                 try {
@@ -81,27 +89,41 @@ public class BookUploadControler {
                     stream.close();
                 } catch (Exception e) {
                     stream = null;
-                    jsonResult.setCode("1");
-                    jsonResult.setMessage("You failed to upload " + i + " => " +"\n" + e.getMessage());
-
-                    return jsonResult;
-
+                    return packJsonResult("errorIO",i);
                 }
             } else {
-                jsonResult.setCode("2");
-                jsonResult.setMessage("You failed to upload " + i + " => " +"\n" + "because file is empty");
-
-                return jsonResult;
+                return packJsonResult("emptyFile",i);
             }
 
         }
-        jsonResult.setCode("0");
-        jsonResult.setMessage("upload successful");
-        return jsonResult;
+        return packJsonResult("success",0);
 
 
     }
 
+    private JsonResult packJsonResult(String rtcode, int fileindex){
+        JsonResult jsonResult = new JsonResult();
+        jsonResult.setCode(rtcode);
+        String message;
+        switch (rtcode){
+            case "success":
+                message = "upload success!!";
+                break;
+            case "errorIO":
+                message = "upload failed file IO error!!";
+                break;
+            case "emptyFile":
+                message = "You failed to upload " + String.valueOf(fileindex) + " => " +"\n" + "because file is empty";
+                break;
+            case "dupFile":
+                message = "You failed to upload " + String.valueOf(fileindex) + " => " +"\n" + "because file is allready exist";
+                break;
+            default:
+                message = "system error";
+        }
+        jsonResult.setMessage(message);
+        return jsonResult;
+    }
     private File getFileOut(MultipartFile file){
         int pos = file.getOriginalFilename().lastIndexOf('.');
         String dirname;

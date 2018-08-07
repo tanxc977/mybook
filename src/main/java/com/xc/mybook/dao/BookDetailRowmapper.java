@@ -36,7 +36,6 @@ public class BookDetailRowmapper implements RowMapper {
             sbDesc.append("...");
             bookDetail.setBookDesc(sbDesc.toString());
 
-//            bookDetail.setBookDesc(resultSet.getString("book_desc"));
             bookDetail.setBookUrl(resultSet.getString("book_url"));
             bookDetail.setDownFlag(resultSet.getString("download_flag"));
             bookDetail.setDownUrl(resultSet.getString("down_url"));
@@ -50,14 +49,9 @@ public class BookDetailRowmapper implements RowMapper {
             if(-1 != imagePath.lastIndexOf("\\") && imagePath != null){
                 imageFile = imagePath.substring(imagePath.lastIndexOf("\\")+1);
             }
-            logger.info("imageFile is: "+ imageFile);
-//            String imageFile = imagePath.substring(imagePath.lastIndexOf("/"));
-//            bookDetail.setImagePath(Constants.imagePath+imageFile);
+
             bookDetail.setImagePath(config.get("imagePath")+ File.separator+imageFile);
 
-
-//            bookDetail.setImagePath(imagePath);
-            logger.info("after set image path ");
             bookDetail.setFilePath(resultSet.getString("file_path"));
             bookDetail.setUpdateDate(resultSet.getString("update_date"));
             bookDetail.setCatagoryTagMain(resultSet.getString("catagory_tag_main"));
