@@ -52,7 +52,7 @@
                         <tbody id="demoList"></tbody>
                     </table>
                 </div>
-                <button style= "display: none" type="button" class="layui-btn" id="uploadButton">开始上传</button>
+                <button style= "display: block" type="button" class="layui-btn" id="uploadButton">开始上传</button>
             </div>
             <form class="layui-form" enctype="multipart/form-data"  method="post" action="">
                 <div class="layui-form-item">
@@ -167,7 +167,7 @@
                 });
             }
             ,done: function(res, index, upload){
-                if(res.code == 0){ //上传成功
+                if(res.code == 'success'){ //上传成功
                     var tr = demoListView.find('tr#upload-'+ index)
                         ,tds = tr.children();
                     tds.eq(2).html('<span style="color: #5FB878;">上传成功</span>');
@@ -179,6 +179,7 @@
                 this.error(index, upload);
             }
             ,error: function(index, upload){
+                uploadError=true;
                 var tr = demoListView.find('tr#upload-'+ index)
                     ,tds = tr.children();
                 tds.eq(2).html('<span style="color: #FF5722;">上传失败</span>');
@@ -187,10 +188,21 @@
         });
         var editIndex = layedit.build('bookDesc');
 
-        // form.on('submit(demo1)', function(data){
         $("#testListAction").click(function(){
-             $("#uploadButton").click();
-             if(uploadError){
+             // $("#uploadButton").click();
+            var failflg = false;
+
+
+
+            demoListView.find("tr").each(function () {
+                var tds = $(this).children();
+                if(tds.eq(3).html() != ''){
+                    failflg=true;
+                }
+            })
+
+             if(uploadError || failflg){
+                 layer.msg('请上传完文件后再提交',{icon: 2, time: 2000});
                  return false;
              }
             if(bookName==""){

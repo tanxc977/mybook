@@ -4,6 +4,8 @@ import com.xc.mybook.Constants;
 import com.xc.mybook.dto.BookAddDto;
 import com.xc.mybook.dto.JsonResult;
 import com.xc.mybook.service.AddBookService;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
+import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -82,14 +82,21 @@ public class BookUploadControler {
 
 
             if (!file.isEmpty()) {
+                FileOutputStream out=null;
                 try {
-                    byte[] bytes = file.getBytes();
-                    stream = new BufferedOutputStream(new FileOutputStream(fileout));
-                    stream.write(bytes);
-                    stream.close();
+//                    byte[] bytes = file.getBytes();
+//                    stream = new BufferedOutputStream(new FileOutputStream(fileout));
+//                    stream.write(bytes);
+//                    stream.close();
+                    out = new FileOutputStream(fileout);
+                    IOUtils.copy(file.getInputStream(),out);
                 } catch (Exception e) {
-                    stream = null;
+//                    stream = null;
                     return packJsonResult("errorIO",i);
+                }finally {
+                    if(out != null){
+                        IOUtils.closeQuietly(out);
+                    }
                 }
             } else {
                 return packJsonResult("emptyFile",i);
@@ -124,14 +131,16 @@ public class BookUploadControler {
         jsonResult.setMessage(message);
         return jsonResult;
     }
+
     private File getFileOut(MultipartFile file){
-        int pos = file.getOriginalFilename().lastIndexOf('.');
-        String dirname;
-        if(-1 != pos){
-            dirname = (file.getOriginalFilename()).substring(0,pos);
-        }else{
-            dirname = file.getOriginalFilename();
-        }
+//        int pos = file.getOriginalFilename().lastIndexOf('.');
+//        String dirname;
+//        if(-1 != pos){
+//            dirname = (file.getOriginalFilename()).substring(0,pos);
+//        }else{
+//            dirname = file.getOriginalFilename();
+//        }
+        String dirname = FilenameUtils.getBaseName(file.getOriginalFilename());
 
         String filePath = Constants.uploadFilePath + File.separator + dirname;
 

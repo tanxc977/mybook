@@ -37,9 +37,9 @@ public class MybookApplication {
 	public MultipartConfigElement multipartConfigElement() {
 		MultipartConfigFactory factory = new MultipartConfigFactory();
 		//  单个数据大小
-		factory.setMaxFileSize("204800KB"); // KB,MB
+		factory.setMaxFileSize("200MB"); // KB,MB
 		/// 总上传数据大小
-		factory.setMaxRequestSize("204800KB");
+		factory.setMaxRequestSize("200MB");
 		return factory.createMultipartConfig();
 	}
 
