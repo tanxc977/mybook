@@ -4,6 +4,7 @@ import com.xc.mybook.Constants;
 import com.xc.mybook.dto.BookAddDto;
 import com.xc.mybook.dto.JsonResult;
 import com.xc.mybook.service.AddBookService;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.slf4j.Logger;
@@ -35,40 +36,39 @@ public class BookUploadControler {
      */
     @RequestMapping(value = "/bookdetail/newbook/")
     public JsonResult addBook( @RequestBody BookAddDto bookAddDto){
-        logger.info("book upload: " + bookAddDto.getBookName());
+        logger.info("add book {} to database;", bookAddDto.getBookName());
         JsonResult jsonResult = new JsonResult();
-        logger.info("bookname: "+ bookAddDto.getBookName());
-        logger.info("bookDesc: "+ bookAddDto.getBookDesc());
-        logger.info("bookCatalog "+ bookAddDto.getCatagoryTag());
+
         if(1 != addBookService.addBookDtl(bookAddDto))
         {
             jsonResult.setCode("1");
             jsonResult.setMessage("新增书籍失败");
+            logger.info("add book {} fail",bookAddDto.getBookName());
         }else {
             jsonResult.setCode("0");
             jsonResult.setMessage("上传成功");
+            logger.info("add book {} success",bookAddDto.getBookName());
         }
 
         return  jsonResult;
     }
 
     /**
-     *
+     * 批量上传文件
      * @param request
      * @return
      */
     @RequestMapping(value = "/upload/batch/", method = RequestMethod.POST)
     public JsonResult handleFileUpload(HttpServletRequest request){
-        logger.info("uplaod batch");
+        logger.info("upload batch file ");
 
         List<MultipartFile> files = ((MultipartHttpServletRequest) request)
                 .getFiles("file");
 
-        MultipartFile file;
-        BufferedOutputStream stream ;
 
         for (int i = 0; i < files.size(); ++i) {
-            file = files.get(i);
+
+            MultipartFile file = files.get(i);
 
             if (getFileOut(file).exists()){
                 return packJsonResult("dupFile",i);
@@ -80,34 +80,29 @@ public class BookUploadControler {
                 fileout.getParentFile().mkdirs();
             }
 
-
             if (!file.isEmpty()) {
-                FileOutputStream out=null;
                 try {
-//                    byte[] bytes = file.getBytes();
-//                    stream = new BufferedOutputStream(new FileOutputStream(fileout));
-//                    stream.write(bytes);
-//                    stream.close();
-                    out = new FileOutputStream(fileout);
-                    IOUtils.copy(file.getInputStream(),out);
+                    FileUtils.copyInputStreamToFile(file.getInputStream(),fileout);
                 } catch (Exception e) {
-//                    stream = null;
                     return packJsonResult("errorIO",i);
-                }finally {
-                    if(out != null){
-                        IOUtils.closeQuietly(out);
-                    }
                 }
             } else {
                 return packJsonResult("emptyFile",i);
             }
-
+            logger.info("upload file {} success",file.getOriginalFilename());
         }
+
         return packJsonResult("success",0);
 
 
     }
 
+    /**
+     * 包装返回结果
+     * @param rtcode
+     * @param fileindex
+     * @return
+     */
     private JsonResult packJsonResult(String rtcode, int fileindex){
         JsonResult jsonResult = new JsonResult();
         jsonResult.setCode(rtcode);
@@ -132,16 +127,14 @@ public class BookUploadControler {
         return jsonResult;
     }
 
+    /**
+     * 获取上传目的文件
+     * @param file
+     * @return
+     */
     private File getFileOut(MultipartFile file){
-//        int pos = file.getOriginalFilename().lastIndexOf('.');
-//        String dirname;
-//        if(-1 != pos){
-//            dirname = (file.getOriginalFilename()).substring(0,pos);
-//        }else{
-//            dirname = file.getOriginalFilename();
-//        }
-        String dirname = FilenameUtils.getBaseName(file.getOriginalFilename());
 
+        String dirname = FilenameUtils.getBaseName(file.getOriginalFilename());
         String filePath = Constants.uploadFilePath + File.separator + dirname;
 
         return new File(filePath,file.getOriginalFilename());

@@ -2,12 +2,14 @@ package com.xc.mybook.dao;
 
 import com.xc.mybook.Constants;
 import com.xc.mybook.entity.BookDetail;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import com.xc.mybook.utils.Config;
 
+import java.io.File;
 import java.sql.ResultSet;
 
 public class BookDetailDRowmapper implements RowMapper {
@@ -32,8 +34,11 @@ public class BookDetailDRowmapper implements RowMapper {
             bookDetail.setDownPwd(resultSet.getString("down_pwd"));
             String imagePath = resultSet.getString("image_path");
 
-            String imageFile = imagePath.substring(imagePath.lastIndexOf("/"));
-            bookDetail.setImagePath(config.get("imagePath")+imageFile);
+            if(null != FilenameUtils.getName(imagePath)){
+                bookDetail.setImagePath(config.get("imagePath")+ File.separator+FilenameUtils.getName(imagePath));
+            }else{
+                bookDetail.setImagePath("");
+            }
 
             bookDetail.setFilePath(resultSet.getString("file_path"));
             bookDetail.setUpdateDate(resultSet.getString("update_date"));

@@ -2,6 +2,7 @@ package com.xc.mybook.dao;
 
 import com.xc.mybook.Constants;
 import com.xc.mybook.entity.BookDetail;
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,15 +43,12 @@ public class BookDetailRowmapper implements RowMapper {
             bookDetail.setDownPwd(resultSet.getString("down_pwd"));
             String imagePath = resultSet.getString("image_path");
 
-            String imageFile = "";
-            if(-1 != imagePath.lastIndexOf("/") && imagePath != null){
-                imageFile = imagePath.substring(imagePath.lastIndexOf("/")+1);
-            }
-            if(-1 != imagePath.lastIndexOf("\\") && imagePath != null){
-                imageFile = imagePath.substring(imagePath.lastIndexOf("\\")+1);
+            if(null != FilenameUtils.getName(imagePath)){
+                bookDetail.setImagePath(config.get("imagePath")+ File.separator+FilenameUtils.getName(imagePath));
+            }else{
+                bookDetail.setImagePath("");
             }
 
-            bookDetail.setImagePath(config.get("imagePath")+ File.separator+imageFile);
 
             bookDetail.setFilePath(resultSet.getString("file_path"));
             bookDetail.setUpdateDate(resultSet.getString("update_date"));
