@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="book/base" xmlns:layout="http://www.w3.org/1999/xhtml">>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>图书列表</title>
+</head>
+<body>
+
+<!--书籍列表-->
+<div id="booklist" th:fragment="listcontent">
+    <div th:each="book : ${bookDetailList}" class="div_activity box_shadow item_mg0_5">
+        <div class="div_activity_img">
+            <a th:href="'/bookindex/bookdetail/'+${book.seqNo}"><img width="180px" height="265px" th:src="${book.imagePath}"/></a>
+        </div>
+        <div class="activity_content">
+            <div class="activity_title">
+                <a th:href="'/bookindex/bookdetail/'+${book.seqNo}">
+                    <label th:text="${book.bookName}">大清帝国</label>
+                </a>
+            </div>
+            <div class="label_icon">
+                <span th:text="${book.updateDate}">2018.03.21</span>
+            </div>
+            <div class="subContentArea" id="bookitem2">
+                <p th:text="${book.bookDesc}">test2</p>
+            </div>
+            <div>
+                <a class="subDetail" th:href="'/bookindex/bookdetail/'+${book.seqNo}">阅读全文...</a>
+            </div>
+        </div>
+    </div>
+    <div class="pagefooter" id="page"></div>
+</div>
+<script src="../../layui.js"></script>
+<script th:inline="javascript">
+    //JavaScript代码区域
+    /*<![CDATA[*/
+    layui.use(['laypage','layer'], function () {
+        var laypage = layui.laypage
+            , $ = layui.$;
+
+        var indexurl="/defaultlist/1";
+        $('#booklist').load(indexurl, function () {
+
+        });
+
+        laypage.render({
+            elem: 'page'
+            , count: /*[[${totalCount}]]*/ 100
+            , limit: /*[[${pageNum}]]*/10
+            , layout: ['prev', 'page', 'next', 'skip']
+            , jump: function (obj, first) {
+                console.log(obj)
+                console.log(obj.curr); //得到当前页，以便向服务端请求对应页的数据。
+                console.log(obj.limit); //得到每页显示的条数
+                var num = obj.curr;
+                var loadurl='/defaultlist/'+num;
+                //首次不执行
+                if (!first) {
+                    //do something
+                    $('#booklist').load(loadurl, function () {
+
+                    });
+                }
+            }
+        });
+
+    });
+    /*]]>*/
+</script>
+</body>
+</html>

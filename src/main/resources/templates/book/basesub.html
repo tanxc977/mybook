@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      layout:decorator="book/base" xmlns:layout="http://www.w3.org/1999/xhtml">>
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+    <title>图书列表</title>
+    <!--查询布局 ： 右侧固定，左侧进行不同页面的代换-->
+</head>
+<body>
+
+<!--书籍列表-->
+<div id="booklist" th:fragment="content">
+    <div class="layui-col-md8 mainbody_left " id="layout-left">
+        <!--书籍列表-->
+        <div th:fragment="listcontent"></div>
+    </div>
+    <div th:replace="book/rightlist::righter"></div>
+</div>
+</body>
+</html>

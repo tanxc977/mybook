@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Title</title>
+</head>
+<body>
+
+<div th:fragment="righter" class="layui-col-md4 mainbody_right" id="layout-right">
+    <!--<div style="padding: 15px;">右侧边</div>-->
+    <div id="layout-right-dtl">
+
+        <div id="xxx1" class="item_mg0_5">
+            <div class="s-list">
+                <input type="text" placeholder="搜索...." class="layui-input" id="searchBook"/>
+                <button type="button" class="layui-btn" onclick="javascript:searchbook();">搜索</button>
+            </div>
+        </div>
+        <div id="sidbar" class="item_mg0_5">
+            <div class="s-list"><h3 class="sub">资源归档</h3>
+                <ul th:each="bookStatics:${bookStaticsList}">
+                    <li>
+
+                        <a th:onclick="'javascript:datelist(\''+${bookStatics.updateDateYyyy}+'\',\''+${bookStatics.updateDateMm}+'\')'">
+                            <span th:text="${bookStatics.updateDateYyyy}"></span>
+                            <span>年</span>
+                            <span th:text="${bookStatics.updateDateMm}"></span>
+                            <span>月</span>
+                        </a>&nbsp;
+                        <span>(</span>
+                        <span th:text="${bookStatics.count}"></span>
+                        <span>)</span>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+
+        <div id="xxx3" class="item_mg0_5">
+            <div class="s-list">
+                xxx3
+            </div>
+        </div>
+    </div>
+    <script src="../../layui.js"></script>
+    <script th:inline="javascript">
+        //JavaScript代码区域
+        /* <![CDATA[ */
+        var $;
+        layui.use(['jquery','element'], function () {
+            $ = layui.$;
+            $('#layout-right').load("/book/layoutright", function () {
+
+            });
+        });
+        /*]]>*/
+    </script>
+</div>
+
+</body>
+</html>
