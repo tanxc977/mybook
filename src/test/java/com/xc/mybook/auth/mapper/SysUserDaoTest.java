@@ -1,7 +1,7 @@
-package com.xc.auth.mapper;
+package com.xc.mybook.auth.mapper;
 
 
-import com.xc.auth.entity.SysUser;
+//import com.xc.mybook.auth.entity.SysUser;
 import com.xc.mybook.MybookApplication;
 import org.junit.Assert;
 import org.junit.Test;
@@ -16,15 +16,15 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @WebAppConfiguration   // 对于非WEB的可有可无
 public class SysUserDaoTest {
 
-    @Autowired
-    private UserMapper userMapper;
+//    @Autowired
+//    private UserMapper userMapper;
 
     @Test
     public void testAddUser(){
-        SysUser user = new SysUser();
-        user.setUsername("jorya");
-        user.setPassword("yyt");
-        int num = userMapper.addUser(user);
-        Assert.assertEquals(1,num);
+//        SysUser user = new SysUser();
+//        user.setUsername("jorya");
+//        user.setPassword("yyt");
+//        int num = userMapper.addUser(user);
+//        Assert.assertEquals(1,num);
     }
 }
