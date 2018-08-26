@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -57,20 +57,22 @@
                     <li class="layui-nav-item"><a onclick="javascript:loadcatagory('YBSJ')">原版书籍</a></li>
                     <li class="layui-nav-item"><a onclick="javascript:loadcatagory('QSJ')">轻小说</a></li>
                     <li class="layui-nav-item"><a onclick="javascript:loadcatagory('QTSJ')">其它书籍</a></li>
-                    <li class="layui-nav-item"><a href="/bookdetail/addbookpage">新增书籍</a></li>
+
+                    <li sec:authorize="hasRole('ROLE_ADMIN')" class="layui-nav-item"><a href="/bookdetail/addbookpage">新增书籍</a></li>
                 </ul>
                 <ul class="layui-nav layui-layout-right">
                     <li class="layui-nav-item">
                         <a href="javascript:void(0);">
                             <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/>
-                            RAINTIME
+                            <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}">RAINTIME</span>
+                            <!--<label th:text="" >RAINTIME</label>-->
                         </a>
                         <dl class="layui-nav-child">
                             <dd><a href="">基本资料</a></dd>
                             <dd><a href="">安全设置</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="">退出</a></li>
+                    <li class="layui-nav-item"><a th:href="@{/logout}">退出</a></li>
                 </ul>
             </div>
         </div>
@@ -83,10 +85,11 @@
 
         </div>
     </div>
-    <div class="layui-footer" style="left: 0px;text-align:center; padding:5px 5px;padding-top:10px;position: center">
-        <!-- 底部固定区域 -->
-        © mbook.com - 我的图书馆
-    </div>
+    <!--<div class="layui-footer" style="left: 0px;text-align:center; padding:5px 5px;padding-top:10px;position: center">-->
+        <!--&lt;!&ndash; 底部固定区域 &ndash;&gt;-->
+        <!--© mbook.com - 我的图书馆-->
+    <!--</div>-->
+    <div th:replace="footer::footer"></div>
 </div>
 <script src="../layui.js"></script>
 <script>

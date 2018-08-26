@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
@@ -19,14 +19,14 @@
                     <li class="layui-nav-item">
                         <a href="javascript:void(0);">
                             <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/>
-                            RAINTIME
+                            <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}">RAINTIME</span>
                         </a>
                         <dl class="layui-nav-child">
                             <dd><a href="">基本资料</a></dd>
                             <dd><a href="">安全设置</a></dd>
                         </dl>
                     </li>
-                    <li class="layui-nav-item"><a href="">退出</a></li>
+                    <li class="layui-nav-item"><a th:href="@{/logout}">退出</a></li>
                 </ul>
             </div>
         </div>
@@ -116,7 +116,7 @@
         </div>
     </div>
 </div>
-
+<div th:replace="footer::footer"></div>
 <script src="../../layui.js" charset="utf-8"></script>
 
 <script>
@@ -126,6 +126,7 @@
             ,form = layui.form
             ,layedit = layui.layedit;
 
+        var editIndex = layedit.build('bookDesc');
         //多文件列表示例
         var demoListView = $('#demoList');
         var uploadError = false;
@@ -186,7 +187,7 @@
                 tds.eq(3).find('.demo-reload').removeClass('layui-hide'); //显示重传
             }
         });
-        var editIndex = layedit.build('bookDesc');
+
 
         $("#testListAction").click(function(){
              // $("#uploadButton").click();
