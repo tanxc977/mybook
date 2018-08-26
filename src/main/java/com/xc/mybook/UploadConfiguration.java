@@ -6,6 +6,10 @@ import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.MultipartConfigElement;
 
+/**
+ * file upload configuration
+ *
+ */
 @Configuration
 public class UploadConfiguration {
     /**

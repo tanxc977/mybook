@@ -62,7 +62,7 @@ public class BookDetailRowmapper implements RowMapper {
 
 
         }catch (Exception e){
-            logger.info("data base map row book_detail error" + i);
+            logger.info("data base map row num {} book_detail error",i);
         }
 
         return bookDetail;

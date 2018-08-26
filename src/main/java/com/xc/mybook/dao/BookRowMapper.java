@@ -31,7 +31,7 @@ public class BookRowMapper implements RowMapper {
             book.setUpdateDate(resultSet.getString("update_date"));
 
         }catch (Exception e){
-            logger.info("data base map row error" + i);
+            logger.info("data base map row num {} error bookrow" , i);
         }
 
         return book;

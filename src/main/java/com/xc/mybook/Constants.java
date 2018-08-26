@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Constants variable
+ */
 public class Constants {
 
     public final static List<String> tagList = Arrays.asList("军事科学·历史地理","多看专区","kindle人全站打包",

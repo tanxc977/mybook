@@ -6,7 +6,11 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
-
+/**
+ * main program start point
+ * MapperScan define the package where Mybatis Mapper file is;
+ * without this annotation,Mybatis is inactive
+ */
 @SpringBootApplication
 @MapperScan(value = {"com.xc.mybook.security.dao","com.xc.mybook.Mapper"})
 public class MybookApplication extends SpringBootServletInitializer {

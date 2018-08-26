@@ -36,7 +36,9 @@ public class BookUploadControler {
      */
     @RequestMapping(value = "/bookdetail/newbook/")
     public JsonResult addBook( @RequestBody BookAddDto bookAddDto){
-        logger.info("add book {} to database;", bookAddDto.getBookName());
+        long timebegin = System.currentTimeMillis();
+
+        logger.info("starting add book {} to database;", bookAddDto.getBookName());
         JsonResult jsonResult = new JsonResult();
 
         if(1 != addBookService.addBookDtl(bookAddDto))
@@ -50,6 +52,7 @@ public class BookUploadControler {
             logger.info("add book {} success",bookAddDto.getBookName());
         }
 
+        logger.info("add book to database {} cost {}ms",bookAddDto.getBookName(),System.currentTimeMillis()-timebegin);
         return  jsonResult;
     }
 
@@ -60,12 +63,12 @@ public class BookUploadControler {
      */
     @RequestMapping(value = "/upload/batch/", method = RequestMethod.POST)
     public JsonResult handleFileUpload(HttpServletRequest request){
-        logger.info("upload batch file ");
-
+        logger.info("start upload batch file  ");
+        long timebeginupload = System.currentTimeMillis();
         List<MultipartFile> files = ((MultipartHttpServletRequest) request)
                 .getFiles("file");
 
-
+        String fileName ="";
         for (int i = 0; i < files.size(); ++i) {
 
             MultipartFile file = files.get(i);
@@ -82,16 +85,20 @@ public class BookUploadControler {
 
             if (!file.isEmpty()) {
                 try {
+                    fileName = file.getOriginalFilename();
                     FileUtils.copyInputStreamToFile(file.getInputStream(),fileout);
+
                 } catch (Exception e) {
+                    logger.info("upload file {} IO error",file.getOriginalFilename());
                     return packJsonResult("errorIO",i);
                 }
             } else {
+                logger.info("upload file is empty!");
                 return packJsonResult("emptyFile",i);
             }
             logger.info("upload file {} success",file.getOriginalFilename());
         }
-
+        logger.info("upload all file {} cost {}ms",fileName,System.currentTimeMillis()-timebeginupload);
         return packJsonResult("success",0);
 
 
@@ -137,6 +144,7 @@ public class BookUploadControler {
         String dirname = FilenameUtils.getBaseName(file.getOriginalFilename());
         String filePath = Constants.uploadFilePath + File.separator + dirname;
 
+        logger.info("upload file path is {}",filePath);
         return new File(filePath,file.getOriginalFilename());
     }
 }

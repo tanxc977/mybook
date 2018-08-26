@@ -9,71 +9,8 @@
 </head>
 <body>
 <div class="layui-layout layui-layout-admin ">
-    <div class="layui-header">
-        <div style="margin:0 auto;">
-            <div style="position: relative;left: 0px;top: 5px;width: 100%;text-align: center;height: 100%">
-                <div class="layui-logo">我的图书馆</div>
-                <!-- 头部区域（可配合layui已有的水平导航） -->
-                <ul class="layui-nav layui-layout-left">
-                    <li class="layui-nav-item"><a href="/index">首页</a></li>
-                    <li class="layui-nav-item">
-                        <a onclick="javascript:;">畅销小说</a>
-                        <dl class="layui-nav-child">
-                            <dd><a onclick="javascript:loadcatagory('CXXS')">畅销小说</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('CXXS','JSKX')">军事科学·历史地理</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('CXXS','GCSZ')">官场商战·人生百态</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('CXXS','RWZJ')">人物传记·旅行见闻</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('CXXS','XDWX')">现代文学·励志鸡汤</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('CXXS','SHYS')">生活养生·运动健身</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('CXXS','GCSZ')">官场商战·阴谋阳谋</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('DKZQ')">多看专区</a></li>
-                    <li class="layui-nav-item">
-                        <a onclick="javascript:;">网络小说</a>
-                        <dl class="layui-nav-child">
-                            <dd><a onclick="javascript:loadcatagory('WLXS')">网络小说   </a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('WLXS','KHQH')">科幻奇幻·西方异世</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('WLXS','LSJK')">历史架空·热血战争</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('WLXS','XQKB')">悬疑恐怖·穿越重生</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('WLXS','CYYQ')">武侠玄幻·穿越言情</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('WLXS','XXXZ')">武侠玄幻·仙侠修真</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('GJS')">工具书</a></li>
-                    <li class="layui-nav-item">
-                        <a onclick="javascript:;">合集资源</a>
-                        <dl class="layui-nav-child">
-                            <dd><a onclick="javascript:loadcatagory('HJZY')">合集资源</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('HJZY','KRDB')">kindle人全站打包</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('HJZY','ZYHJ')">中亚官方合集资源下载</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('HJZY','QTHJ')">其他站点合集资源下载</a></dd>
-                            <dd><a onclick="javascript:loadcatagorysub('HJZY','JGW')">甲骨文系列丛书</a></dd>
-                        </dl>
 
-                    </li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('MH')">漫画</a></li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('ZZQK')">杂志期刊</a></li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('YBSJ')">原版书籍</a></li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('QSJ')">轻小说</a></li>
-                    <li class="layui-nav-item"><a onclick="javascript:loadcatagory('QTSJ')">其它书籍</a></li>
-                </ul>
-                <ul class="layui-nav layui-layout-right">
-                    <li class="layui-nav-item">
-                        <a href="javascript:void(0);">
-                            <img src="http://t.cn/RCzsdCq" class="layui-nav-img"/>
-                            <span th:text="${session.SPRING_SECURITY_CONTEXT.authentication.principal.username}">RAINTIME</span>
-                        </a>
-                        <dl class="layui-nav-child">
-                            <dd><a href="">基本资料</a></dd>
-                            <dd><a href="">安全设置</a></dd>
-                        </dl>
-                    </li>
-                    <li class="layui-nav-item"><a th:href="@{/logout}">退出</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
+    <div th:replace="header::header"></div>
 
     <div class="layui-row homePagebody">
         <!-- 内容主体区域 -->

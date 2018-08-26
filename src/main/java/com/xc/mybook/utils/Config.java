@@ -7,7 +7,10 @@ import org.springframework.stereotype.Component;
 
 import java.util.Properties;
 
-
+/**
+ * get conf.properties in memory
+ * config tool class
+ */
 public class Config {
     private static final Logger logger = LoggerFactory.getLogger(Config.class);
     private static Config config = null;

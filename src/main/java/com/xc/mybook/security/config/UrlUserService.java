@@ -47,7 +47,7 @@ public class UrlUserService implements UserDetailsService {
             List<TwRole> roles = roleDao.findRoleByEmployeeId(employeeId);
             List<GrantedAuthority> grantedAuthorities = new ArrayList<GrantedAuthority>();
             
-            //写入用户的角色  ***  切记 由于框架原因 角色名称要以 ROLE_ 开头 **** 血泪史 ****
+            //写入用户的角色  ***  切记 由于框架原因 角色名称要以 ROLE_ 开头
             //源码：org.springframework.security.access.expression.SecurityExpressionRoot hasAnyRole()
             for (TwRole role : roles) {
                 if (role != null && role.getRoleName() != null) {

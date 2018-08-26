@@ -13,6 +13,8 @@ import java.net.URLEncoder;
 /***
  * header中的filename要用 ""，不然遇到空格类的 文件名会被截断，下到本地时的文件名不完整，并且没有后缀
  * 这个问题困扰了N天
+ *
+ * download file Base Class, offer download function
  */
 public class BaseControler {
 

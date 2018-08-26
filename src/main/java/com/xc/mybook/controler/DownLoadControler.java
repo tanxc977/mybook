@@ -23,7 +23,7 @@ import java.io.IOException;
 public class DownLoadControler extends BaseControler {
 
     private static final Logger logger= LoggerFactory.getLogger(DownLoadControler.class);
-//    private static final Logger logger = Logger.getLogger(DownLoadControler.class);
+
 
     @Autowired
     private BookDetailService bookDetailService;
@@ -32,12 +32,22 @@ public class DownLoadControler extends BaseControler {
     public ResponseEntity<FileSystemResource> fileDownload(HttpServletRequest req, @PathVariable("seqno") String seqno,
                                                            @PathVariable("bookType") String bookType) {
 
-        logger.info("down load start....");
+
+        long starttime = System.currentTimeMillis();
+
         File downloadFile = getDownloadFile(seqno,bookType);
 
+
         try{
-            return export(req, downloadFile);
+            logger.info("download file {} start....",downloadFile.getName());
+
+            ResponseEntity<FileSystemResource> result = export(req,downloadFile);
+            logger.info("download file {} cost {}ms",downloadFile.getName(),System.currentTimeMillis()-starttime);
+            return result;
+
         }catch (IOException e){
+
+            logger.info("download file {} error, cost {}ms",downloadFile.getName(),System.currentTimeMillis()-starttime);
             return null;
         }
 
@@ -73,7 +83,7 @@ public class DownLoadControler extends BaseControler {
     private String getDownloadFileDir(String seqno){
 
         String filePath = getFilePathStr(seqno);
-        logger.info("dir name is {}",FilenameUtils.getBaseName(filePath));
+        logger.info("download file dir name is {}",FilenameUtils.getBaseName(filePath));
         if("" != filePath){
             return FilenameUtils.getBaseName(filePath);
         }else{

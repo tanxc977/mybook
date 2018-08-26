@@ -17,7 +17,7 @@ public class BookListServiceDate extends BookListServiceAbstract {
     private JdbcTemplate jdbcTemplate;
 
     private final String sqlInquire = Constants.commonSqlPrefix +
-            "where update_date_yyyy = ? and update_date_mm = ? limit ?,? ";
+            "where update_date_yyyy = ? and update_date_mm = ?"+" order by enter_date desc "+" limit ?,? ";
     private final String sqlCount = "select count(*) as count from "+Constants.bookDetailTable+" where update_date_yyyy = ? and update_date_mm = ?";
     @Override
     public Boolean checkInput(Map<String, String> map) {

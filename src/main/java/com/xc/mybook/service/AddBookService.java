@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 public class AddBookService {
 
     private static final Logger logger = LoggerFactory.getLogger(AddBookService.class);
+
     @Autowired
     private BookDetailMapper bookDetailMapper;
 
@@ -67,8 +68,7 @@ public class AddBookService {
     }
 
     private String[] getTagList(String tagMain){
-        String[] taglist = new String[]{};
-        taglist = Constants.tagMap.get(tagMain).split(",");
+        String[] taglist = Constants.tagMap.get(tagMain).split(",");;
         return taglist;
     }
 

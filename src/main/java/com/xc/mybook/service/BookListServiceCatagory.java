@@ -17,7 +17,7 @@ public class BookListServiceCatagory extends BookListServiceAbstract {
     private JdbcTemplate jdbcTemplate;
 
     private final String sqlInquire = Constants.commonSqlPrefix +
-            "where catagory_tag_main = ? limit ?,?";
+            "where catagory_tag_main = ? "+" order by enter_date desc "+"limit ?,?";
     private final String sqlCount = "select count(*) as count from "+Constants.bookDetailTable+" where catagory_tag_main = ?";
     @Override
     public Boolean checkInput(Map<String, String> map) {

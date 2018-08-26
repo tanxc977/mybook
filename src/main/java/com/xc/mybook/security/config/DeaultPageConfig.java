@@ -23,7 +23,7 @@ public class DeaultPageConfig {
 
         @Override
         public void customize(ConfigurableEmbeddedServletContainer container) {
-        	//映射配置在 com.tw.controller.DefaultCOntroller
+        	//映射配置在 DefaultCOntroller
             container.addErrorPages(
             		new ErrorPage(HttpStatus.UNAUTHORIZED, "/401"),
             		new ErrorPage(HttpStatus.FORBIDDEN, "/403"),

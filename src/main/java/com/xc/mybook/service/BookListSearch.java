@@ -22,7 +22,7 @@ public class BookListSearch extends BookListServiceAbstract {
 //    private final String sqlCount = "select count(*) as count from "+Constants.bookDetailTable+" where book_name like concat('%',?,'%')";
 
     private final String sqlInquire = Constants.commonSqlPrefix +
-                "where book_name like ? limit ?,?";
+                "where book_name like ? "+" order by enter_date desc "+"limit ?,?";
     private final String sqlCount = "select count(*) as count from "+Constants.bookDetailTable+" where book_name like ?";
 
     @Override

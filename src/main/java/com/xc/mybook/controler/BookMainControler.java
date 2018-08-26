@@ -22,12 +22,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
+/**
+ * main Controller for book lib
+ */
 @Controller
 public class BookMainControler {
     /**
 
-     * 返回html模板.
+     * return html templates
 
      */
     private static final Logger logger = LoggerFactory.getLogger(BookMainControler.class);
@@ -39,6 +41,7 @@ public class BookMainControler {
     @Autowired
     BookStaticsViewService bookStaticsViewService;
 
+
     @RequestMapping(value={"/","/index"})
     public String indexHtml(){
         logger.info("log on index : {}",getClass());
@@ -46,7 +49,13 @@ public class BookMainControler {
         return "/index";
     }
 
-//    主页显示
+
+    /**
+     *
+     * @param map
+     * @param type
+     * @return
+     */
     @RequestMapping("/bookindex/{type}")
     public String indexFrame(Map<String,Object> map,@PathVariable("type") String type){
         List<BookStatics> bookStaticsList = bookStaticsViewService.getList();
@@ -55,7 +64,11 @@ public class BookMainControler {
         return "/bookindex";
     }
 
-//    主页显示
+    /**
+     * index left booklist display
+     * @param map booklistpage model
+     * @return
+     */
     @RequestMapping("/booklistpage/index")
     public String indexBookList(Map<String,Object> map){
 
@@ -71,8 +84,14 @@ public class BookMainControler {
     }
 
 
-
-//   按日期显示
+    /**
+     * catagory by date and month
+     * return book list to page list
+     * @param map page model
+     * @param year catagory year
+     * @param month catagory month
+     * @return
+     */
     @RequestMapping("/booklistpage/datecata/{year}/{month}")
     public String indexBookDateCatagory(Map<String,Object> map, @PathVariable("year") String year, @PathVariable("month") String month){
         Map<String,String> mapinput= new HashMap<>();
@@ -96,6 +115,15 @@ public class BookMainControler {
     }
 
 
+    /**
+     * return book list detail information according to query type:
+     *          index,datacata,catagory,catagorysub,search
+     *          with page number offer
+     * @param map
+     * @param type
+     * @param pageNo
+     * @return
+     */
     @RequestMapping("/bookpage/{type}/{pageNum}")
     public String bookListContentCatagory(Map<String,Object> map,@PathVariable("type") String type,@PathVariable("pageNum") String pageNo){
         Map<String,String> mapInput = new HashMap<>();
@@ -107,7 +135,17 @@ public class BookMainControler {
         return "/bookpage2";
     }
 
-//    按日期显示
+
+    /**
+     * return book list detail information according to query type:
+     *          datecata and detail year month
+     *          with page number offer
+     * @param map
+     * @param year
+     * @param month
+     * @param pageNo
+     * @return
+     */
     @RequestMapping("/bookpage/datecata/{year}/{month}/{pageno}")
     public String bookListDateCatagory(Map<String,Object> map,
                             @PathVariable("year") String year,@PathVariable("month") String month,
@@ -126,7 +164,9 @@ public class BookMainControler {
     //---------------------主分类查询展示------------------------------------------
 
     /***
-     * 按主分类显示 书籍主页
+     *
+     *  return book index  according to query type:
+     *          catagory  main catagory  on index page
      * @param map
      * @param main
      * @return
@@ -147,6 +187,10 @@ public class BookMainControler {
 
     /***
      * 按主分类显示 书籍列表
+     *
+     * return book list detail information according to query type:
+     *          catagory main
+     *          with page number offer
      * @param map
      * @param catagoryMain
      * @return
@@ -173,6 +217,7 @@ public class BookMainControler {
 
     /***
      * 按主分类显示 书籍列表 翻页
+     * main catagory list page change by page number
      * @param map
      * @param main
      * @param pageNo
@@ -293,9 +338,9 @@ public class BookMainControler {
     }
 
     //实际明细页展示，单笔获取书籍信息
-    @RequestMapping("/bookdetailpage/bookdetail/{seqno}")
-    public String bookDetailSeq(Map<String,Object> map, @PathVariable("seqno") String seqno){
-        BookDetail bookDetail = bookDetailService.getSingleBookBySeqNo(seqno);
+    @RequestMapping("/bookdetailpage/bookdetail/{bookid}")
+    public String bookDetailSeq(Map<String,Object> map, @PathVariable("bookid") String bookid){
+        BookDetail bookDetail = bookDetailService.getSingleBookBySeqNo(bookid);
         String filePath = bookDetail.getFilePath();
         List<BookDownload> fileList = new ArrayList<BookDownload>();
 
@@ -324,7 +369,7 @@ public class BookMainControler {
                     sb.append("/");
                     sb.append(bookType);
                     sb.append("/");
-                    sb.append(seqno);
+                    sb.append(bookid);
 
                     bookDownload.setBookName(bookName);
                     bookDownload.setBookType(bookType);
@@ -348,9 +393,9 @@ public class BookMainControler {
     //---------------搜索-----------------------
     @RequestMapping("/booklist/search")
     public String bookSearch(Map<String,Object> map, @RequestBody String searchBook){
-        Map<String,String> mapinput= new HashMap<>();
+        Map<String,String> inquireCondition= new HashMap<>();
 
-        mapinput.put("type",Constants.listSearch);
+        inquireCondition.put("type",Constants.listSearch);
         String searchBookLocal = "";
         try {
             searchBookLocal = URLDecoder.decode(searchBook.split("=")[1],"utf-8");
@@ -358,9 +403,9 @@ public class BookMainControler {
             e.printStackTrace();
             searchBookLocal = searchBook;
         }
-        mapinput.put("searchBook", searchBookLocal);
+        inquireCondition.put("searchBook", searchBookLocal);
 
-        map.put("totalCount",getBookListCount(mapinput));
+        map.put("totalCount",getBookListCount(inquireCondition));
         map.put("pageNum", new Double(Constants.pageNum).intValue());
 
         StringBuilder sb = new StringBuilder();
@@ -397,11 +442,11 @@ public class BookMainControler {
 
 
     //--------------------------Deprecated---------------------------------------------------------
-    /***
-     * 文件下载
-     * @param filepath
-     * @return
-     */
+//    /***
+//     * 文件下载
+//     * @param filepath
+//     * @return
+//     */
 //    @Deprecated
 //    @RequestMapping(value = "/bookdir/{bookType}/{filepath}",produces = "application/json;charset=utf-8")
 /*    public void bookDownload(HttpServletRequest req, HttpServletResponse res, @PathVariable("filepath") String filepath,

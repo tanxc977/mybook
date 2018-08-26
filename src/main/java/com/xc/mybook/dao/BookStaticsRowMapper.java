@@ -20,7 +20,7 @@ public class BookStaticsRowMapper implements RowMapper {
             bookStatics.setUpdateDateYyyy(resultSet.getString("update_date_yyyy"));
 
         }catch (Exception e){
-            logger.info("BookStaticsView map row error" + i);
+            logger.info("BookStaticsView map row num {} error" , i);
         }
 
         return bookStatics;
