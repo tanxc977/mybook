@@ -1,0 +1,93 @@
+drop table IF EXISTS PERMISSION ;
+drop table IF EXISTS ROLE_INFO ;
+drop table IF EXISTS ROLE_REL_PERMISSION ;
+
+drop table IF EXISTS USER_INFO ;
+drop table IF EXISTS USER_REL_ROLE ;
+
+drop table IF EXISTS MENU_INFO ;
+
+
+CREATE TABLE PERMISSION(
+		ID bigint NOT NULL AUTO_INCREMENT ,
+    PERMISSION_ID varchar(32),
+    PERMISSION_DESC varchar(64),
+    PERMISSION_URL VARCHAR(512),
+    METHOD varchar(32),
+    CREATED_USER varchar(32),
+    CREATED_DATE DATE,
+    LAST_UPDATE_BY varchar(32),
+    LAST_UPDATE_DATE DATE,
+		PRIMARY KEY (id)
+);
+
+CREATE TABLE ROLE_INFO(
+		ID bigint NOT NULL AUTO_INCREMENT ,
+    ROLE_ID varchar(32),
+    ROLE_CODE varchar(100),
+    ROLE_NAME varchar(100),
+    CREATED_USER varchar(32),
+    CREATED_DATE DATE,
+    LAST_UPDATE_BY varchar(32),
+    LAST_UPDATE_DATE DATE,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE ROLE_REL_PERMISSION(
+    ID bigint NOT NULL AUTO_INCREMENT ,
+    ROLE_ID varchar(32),
+    PERMISSION_ID varchar(32),
+    CREATED_USER varchar(32),
+    CREATED_DATE DATE,
+    LAST_UPDATE_BY varchar(32),
+    LAST_UPDATE_DATE DATE,
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE USER_INFO(
+    ID bigint NOT NULL AUTO_INCREMENT ,
+    USER_ID varchar(32)  NOT NULL,
+    USER_NAME varchar(32) ,
+    PASS_WORD varchar(62) ,
+    SEX char(1),
+    DEPARTMENT_ID varchar(20),
+    STATUS char(1),
+    CREATED_USER varchar(32),
+    CREATED_DATE DATE,
+    LAST_UPDATE_BY varchar(32),
+    LAST_UPDATE_DATE DATE,
+		PRIMARY KEY (id)
+);
+
+
+CREATE TABLE USER_REL_ROLE(
+		ID bigint NOT NULL AUTO_INCREMENT ,
+    USER_ID varchar(32),
+    ROLE_ID varchar(32)
+    ,
+    CREATED_USER varchar(32),
+    CREATED_DATE DATE,
+    LAST_UPDATE_BY varchar(32),
+    LAST_UPDATE_DATE DATE,
+		PRIMARY KEY (id)
+);
+
+
+CREATE TABLE MENU_INFO(
+    ID bigint NOT NULL AUTO_INCREMENT ,
+    MENU_ID varchar(32) NOT NULL,
+    TEXT_CH varchar(100),
+    TEXT_EN varchar(200),
+    PARENT_ID varchar(32),
+    ORDER_ID varchar(32),
+    PERMISSION_ID varchar(32),
+    MENU_URL VARCHAR(200),
+    IMAGE_URL VARCHAR(200)
+    ,
+    CREATED_USER varchar(32),
+    CREATED_DATE DATE,
+    LAST_UPDATE_BY varchar(32),
+    LAST_UPDATE_DATE DATE,
+    PRIMARY KEY (id)
+);
