@@ -1,5 +1,6 @@
 package com.xc.mybook.controler;
 
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ public class BookAddControler {
      * 返回新增书籍页
      * @return
      */
+    @PreAuthorize("hasAnyRole('ADMIN')")
     @RequestMapping("/bookdetail/addbookpage")
     public String addBook(){
         return "bookadd";
