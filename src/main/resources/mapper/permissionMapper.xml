@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.xc.mybook.security.dao.PermissionDao">
+	
+	<resultMap type="com.xc.mybook.security.entity.TwPermission" id="TwPermission">
+		  <id property="permissionId" column="PERMISSION_ID" />
+		  <result property="permissionDesc" column="PERMISSION_DESC" />
+		  <result property="permissionUrl" column="PERMISSION_URL" />
+		  <result property="method" column="METHOD" />
+		  <result property="createdUser" column="CREATED_USER"/>
+		  <result property="createdDate" column="CREATED_DATE" javaType="java.util.Date"/>
+		  <result property="lastUpdateBy" column="LAST_UPDATE_BY" />
+		  <result property="lastUpdateDate" column="LAST_UPDATE_DATE" javaType="java.util.Date"/>
+	</resultMap>
+	
+	<select id="getPermissionByEmployeeId" parameterType="string" resultMap="TwPermission">
+		SELECT p.*
+		  FROM USER_INFO        u,
+		       USER_REL_ROLE       ur,
+		       ROLE_INFO       r,
+		       ROLE_REL_PERMISSION rp,
+		       PERMISSION       p
+		 WHERE u.user_id = ur.user_id
+		   and ur.role_id = r.role_id
+		   and r.role_id = rp.role_id
+		   and rp.permission_id = p.permission_id
+		   and u.user_id = #{id}
+	</select>
+</mapper>
