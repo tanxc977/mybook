@@ -3,7 +3,7 @@ package com.xc.mybook.controler;
 import com.xc.mybook.Constants;
 import com.xc.mybook.entity.BookDetail;
 import com.xc.mybook.service.BookDetailService;
-import org.apache.catalina.servlet4preview.http.HttpServletRequest;
+//import org.apache.catalina.servlet4preview.http.HttpServletRequest;
 
 
 import org.slf4j.Logger;
@@ -15,6 +15,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.apache.commons.io.FilenameUtils;
+
+import javax.servlet.http.HttpServletRequest;
 import java.io.File;
 import java.io.IOException;
 
